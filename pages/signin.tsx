@@ -7,7 +7,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useState } from "react";
-import { useAuth } from "../lib/authContext";
+import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
 import { EmbeddedSigner, OpenfortAuth } from "@openfort/openfort-js";
 import { useOpenfort } from "../lib/openfortContext";
@@ -43,11 +43,12 @@ const Home: NextPage = () => {
         // Signed in
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
+        const pin = requestPin();
         const token = await openfortAuth.authorizeWithOAuthToken(
           "firebase",
           idToken
         );
-        const pin = requestPin();
+
         setOpenfortConfigConfig(
           80001,
           process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
@@ -60,10 +61,10 @@ const Home: NextPage = () => {
         console.log("success", user);
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         console.log("error", errorMessage);
         window.alert(errorMessage);
+        signOut();
       });
   }
 
@@ -98,15 +99,12 @@ const Home: NextPage = () => {
 
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-
         const idToken = await result.user.getIdToken();
+        const pin = requestPin();
         const token = await openfortAuth.authorizeWithOAuthToken(
           "firebase",
           idToken
         );
-
-        const pin = requestPin();
 
         setOpenfortConfigConfig(
           80001,
@@ -117,20 +115,14 @@ const Home: NextPage = () => {
           console.log("config set");
         });
 
-        // The signed-in user info.
         const user = result.user;
         console.log("sign with google", user);
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
         const errorMessage = error.message;
         console.log("error", errorMessage);
         window.alert(errorMessage);
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        signOut();
       });
   }
 
