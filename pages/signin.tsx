@@ -43,11 +43,11 @@ const Home: NextPage = () => {
         // Signed in
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
-        const pin = requestPin();
         const token = await openfortAuth.authorizeWithOAuthToken(
           "firebase",
           idToken
         );
+        const pin = requestPin();
 
         setOpenfortConfigConfig(
           80001,
@@ -100,11 +100,11 @@ const Home: NextPage = () => {
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
         const idToken = await result.user.getIdToken();
-        const pin = requestPin();
         const token = await openfortAuth.authorizeWithOAuthToken(
           "firebase",
           idToken
         );
+        const pin = requestPin();
 
         setOpenfortConfigConfig(
           80001,

@@ -67,12 +67,13 @@ const Home: NextPage = () => {
         // Signed in
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
-        const pin = requestPin();
 
         const token = await openfortAuth.authorizeWithOAuthToken(
           "firebase",
           idToken
         );
+        const pin = requestPin();
+
         setOpenfortConfigConfig(
           80001,
           process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
@@ -99,11 +100,11 @@ const Home: NextPage = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
 
         const idToken = await result.user.getIdToken();
-        const pin = requestPin();
         const token = await openfortAuth.authorizeWithOAuthToken(
           "firebase",
           idToken
         );
+        const pin = requestPin();
 
         setOpenfortConfigConfig(
           80001,
