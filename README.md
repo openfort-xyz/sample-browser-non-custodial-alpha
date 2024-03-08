@@ -1,4 +1,4 @@
-# Openfort Embedded Signer
+# Openfort Embedded Signer - Browser
 
 This sample shows you how to use Openfort's Embedded Signer.
 
