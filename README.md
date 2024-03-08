@@ -1,8 +1,8 @@
-# Firebase Auth and Openfort
+# Openfort Embedded Signer
 
-This sample shows you how to use Firebase auth with Openfort.
+This sample shows you how to use Openfort's Embedded Signer.
 
-It supports login with all regular auth providers.
+It supports login with all regular auth providers and uses Firebase as external authentication platform.
 
 ## Features
 
@@ -47,7 +47,7 @@ First go to Firebase config: Console > Project settings > General adn create an 
 
 <img width="1083" alt="image" src="https://github.com/openfort-xyz/samples/assets/62625514/f5884f03-ebbd-4c16-a154-b04803d40874">
 
-Copy the FirebaseConfir and continue
+Copy the FirebaseConfig and continue
 
 <img width="1066" alt="image" src="https://github.com/openfort-xyz/samples/assets/62625514/46067ccc-7821-4a9e-91c2-728ec17782c5">
 
@@ -57,30 +57,20 @@ Then go to Firebase-Admin config: Console > Project settings > Service accounts 
 
 Update `.env`
 
-```bash
-#firebase
-NEXT_PUBLIC_apiKey=
-NEXT_PUBLIC_authDomain=
-NEXT_PUBLIC_projectId=
-NEXT_PUBLIC_storageBucket=
-NEXT_PUBLIC_messagingSenderId=
-NEXT_PUBLIC_appId=
+**4. Set up Firebase Auth in Openfort**
 
+To set up Firebase to authenticate players with Openfort, visit your [dashboard provider settings](https://dashboard.openfort.xyz/players/auth/providers).
 
-#Firebase-admin
-type=
-project_id=
-private_key_id=
-private_key=
-client_email=
-client_id=
-auth_uri=
-token_uri=
-auth_provider_x509_cert_url=
-client_x509_cert_url=
-```
+<div align="center">
+  <img
+    width="50%"
+    height="50%"
+    src="https://blog-cms.openfort.xyz/uploads/firebase_auth_8ccee72abf.png?updated_at=2023-11-09T19:56:44.398Z"
+    alt='firebase auth'
+  />
+</div>
 
-**4. Follow the server instructions on how to run**
+**5. Follow the server instructions on how to run**
 
 Install & Run:
 
