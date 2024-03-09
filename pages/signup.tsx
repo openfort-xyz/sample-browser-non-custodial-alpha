@@ -9,13 +9,11 @@ import {
 import { useState } from "react";
 import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
-import { EmbeddedSigner, OpenfortAuth } from "@openfort/openfort-js";
+import Openfort, { PasswordRecovery } from "@openfort/openfort-js";
 import { requestPin } from "../lib/create-pin";
 import { useOpenfort } from "../lib/openfortContext";
 
-const openfortAuth = new OpenfortAuth(
-  process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!
-);
+const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
 const Home: NextPage = () => {
   const { user, loading } = useAuth();
@@ -39,27 +37,22 @@ const Home: NextPage = () => {
   async function setOpenfortConfigConfig(
     chainId: number,
     publishableKey: string,
-    accessToken: string,
-    password?: string
+    accessToken: string
   ) {
     const openfortConfig = {
       chainID: chainId,
       publishableKey: publishableKey,
       accessToken: accessToken,
-      password: password,
     };
     setConfig(openfortConfig);
+    try {
+      openfort.configureEmbeddedSigner(chainId);
+    } catch (error) {
+      const password = requestPin();
 
-    const embeddedSigner = new EmbeddedSigner(
-      chainId,
-      publishableKey,
-      accessToken,
-      password
-    );
-    embeddedSigner.ensureEmbeddedAccount().then((r) => {
-      console.log("deviceid", r);
-      embeddedSigner.dispose();
-    });
+      const passwordRecovery = new PasswordRecovery(password);
+      await openfort.configureEmbeddedSignerRecovery(passwordRecovery);
+    }
   }
   function createUserCredentials() {
     createUserWithEmailAndPassword(auth, email, password)
@@ -68,17 +61,12 @@ const Home: NextPage = () => {
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
 
-        const token = await openfortAuth.authorizeWithOAuthToken(
-          "firebase",
-          idToken
-        );
-        const pin = requestPin();
+        const token = await openfort.loginWithOAuthToken("firebase", idToken);
 
         setOpenfortConfigConfig(
           80001,
           process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-          token.token,
-          pin
+          token
         ).then((r) => {
           console.log("config set");
         });
@@ -100,17 +88,12 @@ const Home: NextPage = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
 
         const idToken = await result.user.getIdToken();
-        const token = await openfortAuth.authorizeWithOAuthToken(
-          "firebase",
-          idToken
-        );
-        const pin = requestPin();
+        const token = await openfort.loginWithOAuthToken("firebase", idToken);
 
         setOpenfortConfigConfig(
           80001,
           process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-          token.token,
-          pin
+          token
         ).then((r) => {
           console.log("config set");
         });

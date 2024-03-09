@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useOpenfort } from "../lib/openfortContext";
-import Openfort, { EmbeddedSigner } from "@openfort/openfort-js";
+import Openfort from "@openfort/openfort-js";
+const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
 export function CollectButton() {
   const [collectLoading, setCollectLoading] = React.useState(false);
@@ -20,19 +21,12 @@ export function CollectButton() {
 
       if (collectResponseJSON.data?.nextAction) {
         console.log("config", config);
-        const signer = new EmbeddedSigner(
-          config.chainID,
-          config.publishableKey,
-          config.accessToken,
-          config.password
-        );
-        const openfort = new Openfort(config.publishableKey, signer);
+
         const response = await openfort.sendSignatureTransactionIntentRequest(
           collectResponseJSON.data.id,
           collectResponseJSON.data.nextAction.payload.userOpHash
         );
         console.log("response", response);
-        signer.dispose();
       }
 
       console.log("success:", collectResponseJSON.data);

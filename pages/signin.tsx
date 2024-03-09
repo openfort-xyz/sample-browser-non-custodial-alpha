@@ -9,13 +9,10 @@ import {
 import { useState } from "react";
 import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
-import { EmbeddedSigner, OpenfortAuth } from "@openfort/openfort-js";
+import Openfort, { PasswordRecovery } from "@openfort/openfort-js";
 import { useOpenfort } from "../lib/openfortContext";
 import { requestPin } from "../lib/create-pin";
-
-const openfortAuth = new OpenfortAuth(
-  process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!
-);
+const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -36,24 +33,19 @@ const Home: NextPage = () => {
     );
 
   const auth = getAuth();
-
   function login() {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         // Signed in
+
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
-        const token = await openfortAuth.authorizeWithOAuthToken(
-          "firebase",
-          idToken
-        );
-        const pin = requestPin();
+        const token = await openfort.loginWithOAuthToken("firebase", idToken);
 
         setOpenfortConfigConfig(
           80001,
           process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-          token.token,
-          pin
+          token
         ).then((r) => {
           console.log("config set");
         });
@@ -71,27 +63,24 @@ const Home: NextPage = () => {
   async function setOpenfortConfigConfig(
     chainId: number,
     publishableKey: string,
-    accessToken: string,
-    password?: string
+    accessToken: string
   ) {
     const openfortConfig = {
       chainID: chainId,
       publishableKey: publishableKey,
       accessToken: accessToken,
-      password: password,
     };
-    setConfig(openfortConfig);
+    const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
-    const embeddedSigner = new EmbeddedSigner(
-      chainId,
-      publishableKey,
-      accessToken,
-      password
-    );
-    embeddedSigner.ensureEmbeddedAccount().then((r) => {
-      console.log("deviceid", r);
-      embeddedSigner.dispose();
-    });
+    setConfig(openfortConfig);
+    try {
+      openfort.configureEmbeddedSigner(chainId);
+    } catch (error) {
+      const password = requestPin();
+
+      const passwordRecovery = new PasswordRecovery(password);
+      await openfort.configureEmbeddedSignerRecovery(passwordRecovery);
+    }
   }
 
   function loginWithGoogle() {
@@ -99,18 +88,17 @@ const Home: NextPage = () => {
 
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
-        const idToken = await result.user.getIdToken();
-        const token = await openfortAuth.authorizeWithOAuthToken(
-          "firebase",
-          idToken
+        const openfort = new Openfort(
+          process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!
         );
-        const pin = requestPin();
+
+        const idToken = await result.user.getIdToken();
+        const token = await openfort.loginWithOAuthToken("firebase", idToken);
 
         setOpenfortConfigConfig(
           80001,
           process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-          token.token,
-          pin
+          token
         ).then((r) => {
           console.log("config set");
         });
