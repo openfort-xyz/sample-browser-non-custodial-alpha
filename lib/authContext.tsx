@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { getAuth, onAuthStateChanged, signOut as signout } from "firebase/auth";
 import { setCookie, destroyCookie } from "nookies";
+import Openfort from "@openfort/openfort-js";
+const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
 export type TIdTokenResult = {
   token: string;
@@ -49,7 +51,7 @@ export default function AuthContextProvider({ children }: Props) {
         // Save decoded token on the state
         user.getIdTokenResult().then((result) => setUser(result));
       }
-      if (!user) setUser(null);
+      if (!user || openfort.isLoaded()) setUser(null);
       setLoading(false);
     });
   }, []);
@@ -66,5 +68,6 @@ export const useAuth = () => useContext(authContext);
 export const signOut = async () => {
   const auth = getAuth();
   destroyCookie(null, "idToken");
+  await openfort.logout();
   await signout(auth);
 };

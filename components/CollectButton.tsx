@@ -1,16 +1,24 @@
 import * as React from "react";
-import { useOpenfort } from "../lib/openfortContext";
-import Openfort from "@openfort/openfort-js";
+import Openfort, { PasswordRecovery } from "@openfort/openfort-js";
+import { requestPin } from "../lib/create-pin";
 const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
 export function CollectButton() {
   const [collectLoading, setCollectLoading] = React.useState(false);
-  const { config } = useOpenfort();
 
   const handleCollectButtonClick = async () => {
     try {
       setCollectLoading(true);
+      try {
+        const chainId = 80001;
+        await openfort.configureEmbeddedSigner(chainId);
+      } catch (error) {
+        console.log("missing embedded signer shares", error);
+        const password = requestPin();
 
+        const passwordRecovery = new PasswordRecovery(password);
+        await openfort.configureEmbeddedSignerRecovery(passwordRecovery);
+      }
       const collectResponse = await fetch(`/api/examples/protected-collect`, {
         method: "POST",
         headers: {
@@ -20,8 +28,6 @@ export function CollectButton() {
       const collectResponseJSON = await collectResponse.json();
 
       if (collectResponseJSON.data?.nextAction) {
-        console.log("config", config);
-
         const response = await openfort.sendSignatureTransactionIntentRequest(
           collectResponseJSON.data.id,
           collectResponseJSON.data.nextAction.payload.userOpHash
