@@ -9,7 +9,10 @@ import {
 import { useState } from "react";
 import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
-import Openfort, { PasswordRecovery } from "@openfort/openfort-js";
+import Openfort, {
+  OAuthProvider,
+  PasswordRecovery,
+} from "@openfort/openfort-js";
 import { useOpenfort } from "../lib/openfortContext";
 import { requestPin } from "../lib/create-pin";
 const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
@@ -73,8 +76,9 @@ const Home: NextPage = () => {
 
     setConfig(openfortConfig);
     try {
-      openfort.configureEmbeddedSigner(chainId);
+      await openfort.configureEmbeddedSigner(chainId);
     } catch (error) {
+      console.log("missing embedded signer shares", error);
       const password = requestPin();
 
       const passwordRecovery = new PasswordRecovery(password);
@@ -88,7 +92,10 @@ const Home: NextPage = () => {
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
         const idToken = await result.user.getIdToken();
-        const token = await openfort.loginWithOAuthToken("firebase", idToken);
+        const token = await openfort.authorizeWithOAuthToken(
+          OAuthProvider.Firebase,
+          idToken
+        );
 
         setOpenfortConfigConfig(
           80001,
