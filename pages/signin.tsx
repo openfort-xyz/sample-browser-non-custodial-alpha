@@ -70,7 +70,6 @@ const Home: NextPage = () => {
       publishableKey: publishableKey,
       accessToken: accessToken,
     };
-    const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
     setConfig(openfortConfig);
     try {
@@ -88,10 +87,6 @@ const Home: NextPage = () => {
 
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
-        const openfort = new Openfort(
-          process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!
-        );
-
         const idToken = await result.user.getIdToken();
         const token = await openfort.loginWithOAuthToken("firebase", idToken);
 
