@@ -95,7 +95,10 @@ const Home: NextPage = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
 
         const idToken = await result.user.getIdToken();
-        const token = await openfort.loginWithOAuthToken("firebase", idToken);
+        const token = await openfort.authorizeWithOAuthToken(
+          "firebase",
+          idToken
+        );
 
         setOpenfortConfigConfig(
           80001,

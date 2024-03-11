@@ -43,7 +43,10 @@ const Home: NextPage = () => {
 
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
-        const token = await openfort.loginWithOAuthToken("firebase", idToken);
+        const token = await openfort.authorizeWithOAuthToken(
+          "firebase",
+          idToken
+        );
 
         setOpenfortConfigConfig(
           80001,
