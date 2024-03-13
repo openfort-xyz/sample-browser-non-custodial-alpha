@@ -1,15 +1,20 @@
 import * as React from "react";
-import { useOpenfort } from "../lib/openfortContext";
 import Openfort from "@openfort/openfort-js";
-const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!);
 
 export function CollectButton() {
   const [collectLoading, setCollectLoading] = React.useState(false);
-  const { config } = useOpenfort();
+  const openfort = new Openfort();
 
   const handleCollectButtonClick = async () => {
+    console.log("openfort", openfort.getAccessToken(), openfort.isLoaded());
+    if (!openfort) {
+        return;
+    }
     try {
+      // await waitUntilAuthenticated(openfort);
       setCollectLoading(true);
+
+      console.log(openfort.getAccessToken())
 
       const collectResponse = await fetch(`/api/examples/protected-collect`, {
         method: "POST",
@@ -20,8 +25,6 @@ export function CollectButton() {
       const collectResponseJSON = await collectResponse.json();
 
       if (collectResponseJSON.data?.nextAction) {
-        console.log("config", config);
-
         const response = await openfort.sendSignatureTransactionIntentRequest(
           collectResponseJSON.data.id,
           collectResponseJSON.data.nextAction.payload.userOpHash
