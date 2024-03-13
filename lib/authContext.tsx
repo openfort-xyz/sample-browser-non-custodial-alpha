@@ -50,6 +50,7 @@ export default function AuthContextProvider({ children }: Props) {
         // Save decoded token on the state
         user.getIdTokenResult().then((result) => setUser(result));
       }
+
       if (!user) setUser(null);
       setLoading(false);
     });
