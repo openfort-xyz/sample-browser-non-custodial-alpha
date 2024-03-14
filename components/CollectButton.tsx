@@ -1,14 +1,20 @@
 import * as React from "react";
-import { useOpenfort } from "../lib/openfortContext";
-import Openfort, { EmbeddedSigner } from "@openfort/openfort-js";
+import Openfort from "@openfort/openfort-js";
 
 export function CollectButton() {
   const [collectLoading, setCollectLoading] = React.useState(false);
-  const { config } = useOpenfort();
+  const openfort = new Openfort();
 
   const handleCollectButtonClick = async () => {
+    console.log("openfort", openfort.getAccessToken(), openfort.isLoaded());
+    if (!openfort) {
+        return;
+    }
     try {
+      // await waitUntilAuthenticated(openfort);
       setCollectLoading(true);
+
+      console.log(openfort.getAccessToken())
 
       const collectResponse = await fetch(`/api/examples/protected-collect`, {
         method: "POST",
@@ -19,20 +25,11 @@ export function CollectButton() {
       const collectResponseJSON = await collectResponse.json();
 
       if (collectResponseJSON.data?.nextAction) {
-        console.log("config", config);
-        const signer = new EmbeddedSigner(
-          config.chainID,
-          config.publishableKey,
-          config.accessToken,
-          config.password
-        );
-        const openfort = new Openfort(config.publishableKey, signer);
         const response = await openfort.sendSignatureTransactionIntentRequest(
           collectResponseJSON.data.id,
           collectResponseJSON.data.nextAction.payload.userOpHash
         );
         console.log("response", response);
-        signer.dispose();
       }
 
       console.log("success:", collectResponseJSON.data);

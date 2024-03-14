@@ -9,19 +9,14 @@ import {
 import { useState } from "react";
 import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
-import { EmbeddedSigner, OpenfortAuth } from "@openfort/openfort-js";
 import { requestPin } from "../lib/create-pin";
-import { useOpenfort } from "../lib/openfortContext";
-
-const openfortAuth = new OpenfortAuth(
-  process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!
-);
+import Openfort, {MissingRecoveryMethod, OAuthProvider, PasswordRecovery} from "@openfort/openfort-js";
 
 const Home: NextPage = () => {
   const { user, loading } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { setConfig } = useOpenfort();
+  const openfort = new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY);
 
   if (loading) return null;
 
@@ -36,30 +31,16 @@ const Home: NextPage = () => {
     );
 
   const auth = getAuth();
-  async function setOpenfortConfigConfig(
-    chainId: number,
-    publishableKey: string,
-    accessToken: string,
-    password?: string
-  ) {
-    const openfortConfig = {
-      chainID: chainId,
-      publishableKey: publishableKey,
-      accessToken: accessToken,
-      password: password,
-    };
-    setConfig(openfortConfig);
-
-    const embeddedSigner = new EmbeddedSigner(
-      chainId,
-      publishableKey,
-      accessToken,
-      password
-    );
-    embeddedSigner.ensureEmbeddedAccount().then((r) => {
-      console.log("deviceid", r);
-      embeddedSigner.dispose();
-    });
+  async function setOpenfortConfigConfig(chainId: number) {
+    try {
+        await openfort.configureEmbeddedSigner();
+    } catch (error) {
+        if (error instanceof MissingRecoveryMethod) {
+            const password = requestPin();
+            const passwordRecovery = new PasswordRecovery(password);
+            await openfort.configureEmbeddedSignerRecovery(passwordRecovery,chainId);
+        }
+    }
   }
   function createUserCredentials() {
     createUserWithEmailAndPassword(auth, email, password)
@@ -68,19 +49,11 @@ const Home: NextPage = () => {
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken();
 
-        const token = await openfortAuth.authorizeWithOAuthToken(
-          "firebase",
-          idToken
-        );
-        const pin = requestPin();
+        await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
 
-        setOpenfortConfigConfig(
-          80001,
-          process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-          token.token,
-          pin
-        ).then((r) => {
-          console.log("config set");
+        setOpenfortConfigConfig(80001).catch((error) => {
+            window.alert(error);
+            signOut()
         });
         console.log("success", user);
       })
@@ -100,18 +73,8 @@ const Home: NextPage = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
 
         const idToken = await result.user.getIdToken();
-        const token = await openfortAuth.authorizeWithOAuthToken(
-          "firebase",
-          idToken
-        );
-        const pin = requestPin();
-
-        setOpenfortConfigConfig(
-          80001,
-          process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-          token.token,
-          pin
-        ).then((r) => {
+        const token = await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
+        setOpenfortConfigConfig(80001).then((r) => {
           console.log("config set");
         });
         // The signed-in user info.
