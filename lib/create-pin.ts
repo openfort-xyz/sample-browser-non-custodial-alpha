@@ -5,17 +5,17 @@
  * @returns A valid PIN string.
  */
 export function requestPin(): string {
-    let pin: string | null = '';
-    const pinRegex = /^\d{4,}$/; // Regular expression to check for at least four digits
-  
-    while (!pinRegex.test(pin)) {
-      pin = prompt("Input your PIN (must be at least four digits):", '');
-      if (pin === null) {
-        // User pressed cancel, you can handle this case as you want.
-        // Here, we're just throwing an error. You might want to return null or a default value.
-        throw new Error("PIN entry cancelled by the user.");
-      }
+  let pin: string | null = "";
+  const pinRegex = /^\d{4,}$/; // Regular expression to check for at least four digits
+
+  while (!pinRegex.test(pin)) {
+    pin = prompt("Input your PIN (must be at least four digits):", "");
+    if (pin === null) {
+      // User pressed cancel, you can handle this case as you want.
+      // Here, we're just throwing an error. You might want to return null or a default value.
+      throw new Error("PIN entry cancelled by the user.");
     }
-  
-    return pin;
   }
+
+  return pin;
+}

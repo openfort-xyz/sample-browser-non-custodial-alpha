@@ -10,7 +10,11 @@ import { useState } from "react";
 import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
 import { requestPin } from "../lib/create-pin";
-import Openfort, {MissingRecoveryMethod, OAuthProvider, PasswordRecovery} from "@openfort/openfort-js";
+import Openfort, {
+  MissingRecoveryMethod,
+  OAuthProvider,
+  PasswordRecovery,
+} from "@openfort/openfort-js";
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -31,66 +35,51 @@ const Home: NextPage = () => {
     );
 
   const auth = getAuth();
-  function login() {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        // Signed in
-
-        const user = userCredential.user;
-        const idToken = await userCredential.user.getIdToken();
-        const token = await openfort.authenticateOAuth("firebase", idToken);
-
-        setOpenfortConfigConfig(80001).catch((error) => {
-            console.log("error", error);
-            window.alert(error);
-            signOut()
-        });
-
-        console.log("success", user);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log("error", errorMessage);
-        window.alert(errorMessage);
-        signOut();
-      });
+  async function login() {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const idToken = await userCredential.user.getIdToken();
+      await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
+      await setOpenfortConfigConfig(80001);
+    } catch (error) {
+      console.log(error);
+      window.alert(error);
+      await signOut();
+    }
   }
 
   async function setOpenfortConfigConfig(chainId: number) {
     try {
-        await openfort.configureEmbeddedSigner();
+      await openfort.configureEmbeddedSigner();
     } catch (error) {
-        if (error instanceof MissingRecoveryMethod) {
-            const password = requestPin();
+      if (error instanceof MissingRecoveryMethod) {
+        const password = requestPin();
 
-            const passwordRecovery = new PasswordRecovery(password);
-            await openfort.configureEmbeddedSignerRecovery(passwordRecovery, chainId);
-        }
+        const passwordRecovery = new PasswordRecovery(password);
+        await openfort.configureEmbeddedSignerRecovery(
+          passwordRecovery,
+          chainId
+        );
+      }
     }
   }
 
-  function loginWithGoogle() {
-    const googleProvider = new GoogleAuthProvider();
-
-    signInWithPopup(auth, googleProvider)
-      .then(async (result) => {
-        const idToken = await result.user.getIdToken();
-        await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
-
-        setOpenfortConfigConfig(80001).catch((error) => {
-            window.alert(error);
-            signOut()
-        });
-
-        const user = result.user;
-        console.log("sign with google", user);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log("error", errorMessage);
-        window.alert(errorMessage);
-        signOut();
-      });
+  async function loginWithGoogle() {
+    try {
+      const googleProvider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, googleProvider);
+      const idToken = await result.user.getIdToken();
+      await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
+      await setOpenfortConfigConfig(80001);
+    } catch (error) {
+      console.log(error);
+      window.alert(error);
+      await signOut();
+    }
   }
 
   return (
@@ -113,10 +102,10 @@ const Home: NextPage = () => {
             className="border border-current	"
           />
           <br />
-          <button onClick={() => login()}>Login</button>
+          <button onClick={login}>Login</button>
         </div>
         <div>
-          <button onClick={() => loginWithGoogle()}>Login with Google</button>
+          <button onClick={loginWithGoogle}>Login with Google</button>
         </div>
       </div>
     </>

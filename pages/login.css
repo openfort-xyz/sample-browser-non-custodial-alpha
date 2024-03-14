@@ -1,0 +1,129 @@
+.login-signup-container {
+    width: 700px;
+    height: 450px;
+    margin: 50px auto;
+    padding: 60px 200px;
+    border: 1px solid #f1f1f1;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.login-signup-title {
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 1.4em;
+}
+
+.chain-label {
+    padding-left: 6px;
+    color: gray;
+    font-size: 0.8em;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.recovery-input-group {
+    margin-bottom: 20px;
+    margin-top: 70px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.button-group {
+    margin-bottom: 20px;
+}
+
+.google-login-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nft-container {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    width: 100%; /* Take the full width of the parent */
+    margin: 10px auto; /* Margin for some spacing */
+    padding-top: 40px; /* Padding for some spacing */
+    padding-bottom: 20px; /* Padding for some spacing */
+}
+
+.nft-image {
+    width: 128px; /* Set a fixed width */
+    height: 128px; /* Set a fixed height */
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.mint-nft-btn {
+    background-color: black;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mint-nft-btn:disabled {
+    background-color: #545454;
+}
+
+.mint-nft-btn:disabled:hover {
+    background-color: #545454;
+}
+
+.mint-nft-btn:hover {
+    background-color: #333;
+}
+
+
+
+.login-login-btn {
+    background-color: black;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.google-login-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.login-login-btn:hover {
+    background-color: #333;
+}
+
+.toggle-text {
+    text-align: center;
+}
+
+.toggle-text span {
+    color: #ff7d2e;
+    cursor: pointer;
+}
+
+.toggle-text span:hover {
+    text-decoration: underline;
+}

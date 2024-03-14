@@ -34,27 +34,27 @@ export default function AuthContextProvider({ children }: Props) {
   const [user, setUser] = useState<TIdTokenResult | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      //user returned from firebase not the state
-      if (user) {
-        // Save token for backend calls
-        user.getIdToken().then((token) =>
-          setCookie(null, "idToken", token, {
-            maxAge: 30 * 24 * 60 * 60,
-            path: "/",
-          })
-        );
-
-        // Save decoded token on the state
-        user.getIdTokenResult().then((result) => setUser(result));
-      }
-
-      if (!user) setUser(null);
-      setLoading(false);
-    });
-  }, []);
+  // useEffect(() => {
+  //     const auth = getAuth();
+  // onAuthStateChanged(auth, (user) => {
+  //     user returned from firebase not the state
+  // if (user) {
+  //     Save token for backend calls
+  // user.getIdToken().then((token) =>
+  //     setCookie(null, "idToken", token, {
+  //         maxAge: 30 * 24 * 60 * 60,
+  //         path: "/",
+  //     })
+  // );
+  //
+  // Save decoded token on the state
+  // user.getIdTokenResult().then((result) => setUser(result));
+  // }
+  //
+  // if (!user) setUser(null);
+  // setLoading(false);
+  // });
+  // }, []);
 
   return (
     <authContext.Provider value={{ user, loading }}>

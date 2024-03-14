@@ -5,12 +5,17 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useState } from "react";
 import { signOut, useAuth } from "../lib/authContext";
 import Link from "next/link";
 import { requestPin } from "../lib/create-pin";
-import Openfort, {MissingRecoveryMethod, OAuthProvider, PasswordRecovery} from "@openfort/openfort-js";
+import Openfort, {
+  MissingRecoveryMethod,
+  OAuthProvider,
+  PasswordRecovery,
+} from "@openfort/openfort-js";
 
 const Home: NextPage = () => {
   const { user, loading } = useAuth();
@@ -33,61 +38,47 @@ const Home: NextPage = () => {
   const auth = getAuth();
   async function setOpenfortConfigConfig(chainId: number) {
     try {
-        await openfort.configureEmbeddedSigner();
+      await openfort.configureEmbeddedSigner();
     } catch (error) {
-        if (error instanceof MissingRecoveryMethod) {
-            const password = requestPin();
-            const passwordRecovery = new PasswordRecovery(password);
-            await openfort.configureEmbeddedSignerRecovery(passwordRecovery,chainId);
-        }
+      if (error instanceof MissingRecoveryMethod) {
+        const password = requestPin();
+        const passwordRecovery = new PasswordRecovery(password);
+        await openfort.configureEmbeddedSignerRecovery(
+          passwordRecovery,
+          chainId
+        );
+      }
     }
   }
-  function createUserCredentials() {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        const idToken = await userCredential.user.getIdToken();
-
-        await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
-
-        setOpenfortConfigConfig(80001).catch((error) => {
-            window.alert(error);
-            signOut()
-        });
-        console.log("success", user);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log("error", errorMessage);
-        window.alert(errorMessage);
-        signOut();
-      });
+  async function createUserCredentials() {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const idToken = await userCredential.user.getIdToken();
+      await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
+      await setOpenfortConfigConfig(80001);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+      await signOut();
+    }
   }
 
-  function loginWithGoogle() {
-    const googleProvider = new GoogleAuthProvider();
-
-    signInWithPopup(auth, googleProvider)
-      .then(async (result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-
-        const idToken = await result.user.getIdToken();
-        const token = await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
-        setOpenfortConfigConfig(80001).then((r) => {
-          console.log("config set");
-        });
-        // The signed-in user info.
-        const user = result.user;
-
-        console.log("sign with google", user);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log("error", errorMessage);
-        window.alert(errorMessage);
-        signOut();
-      });
+  async function signupWithGoogle() {
+    try {
+      const googleProvider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, googleProvider);
+      const idToken = await result.user.getIdToken();
+      await openfort.authenticateOAuth(OAuthProvider.Firebase, idToken);
+      await setOpenfortConfigConfig(80001);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+      await signOut();
+    }
   }
 
   return (
@@ -113,7 +104,7 @@ const Home: NextPage = () => {
           <button onClick={createUserCredentials}>Signup</button>
         </div>
         <div>
-          <button onClick={() => loginWithGoogle()}>Login with Google</button>
+          <button onClick={signupWithGoogle}>Signup with Google</button>
         </div>
       </div>
     </>
