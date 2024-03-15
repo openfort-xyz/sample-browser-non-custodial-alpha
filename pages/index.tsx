@@ -221,14 +221,14 @@ const Demo: NextPage = () => {
       {getState === EmbeddedState.MISSING_RECOVERY_METHOD ? (
         <>
           <h2 className="login-signup-title">
-            {"Enter your recovery password"}
+            {"Enter your recovery pin"}
           </h2>
           <div className="input-group">
             <div className="recovery-input-group">
               <input
-                type="password"
+                type="number"
                 name="passwordRecovery"
-                placeholder="Password recovery"
+                placeholder="Pin recovery"
               />
             </div>
             <div className="button-group">
@@ -264,7 +264,7 @@ const Demo: NextPage = () => {
             </div>
             <div className="button-group">
               <button className="google-login-btn" onClick={loginWithGoogle}>
-                    Login with Google
+                    Continue with Google
               </button>
             </div>
           </div> : <div className="button-group"><div className="spinner"></div></div>}
