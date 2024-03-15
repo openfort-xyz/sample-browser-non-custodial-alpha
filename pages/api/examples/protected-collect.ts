@@ -31,8 +31,8 @@ export default async function handler(
   if (authResult) {
     const playerId = authResult.playerId;
 
-    const policy_id = "pol_150c7e49-cfd1-4b78-bf4d-148fb304a8d3";
-    const contract_id = "con_6a928e76-ca45-41e8-a524-2454e8c78197";
+    const policy_id = "pol_0b74cbac-146b-4a1e-98e1-66e83aef5deb";
+    const contract_id = "con_42883506-04d5-408e-93da-2151e293a82b";
     const chainId = 80001;
     const optimistic = true;
 
