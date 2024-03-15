@@ -1,3 +1,3 @@
 export default function Footer(props: any) {
-  return <div>footer</div>;
+  return <a className={"link"} href={"https://www.openfort.xyz"}>openfort.xyz</a>;
 }

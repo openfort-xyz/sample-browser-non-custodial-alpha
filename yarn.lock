@@ -878,10 +878,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@openfort/openfort-js@0.5.10":
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.5.10.tgz#3fec76a984c9377918fd42044482d08394ed33ff"
-  integrity sha512-62hAHII1V8ll13PkfrhNkko3tZyy/2B2gDoywnpLJMn+AXldRm86EV3Kwdrjbl7n9yRstOwOCIshnU+HhUk/GQ==
+"@openfort/openfort-js@0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.5.17.tgz#f40cbf7f38534f37db02710cd1822dbc1cd5255d"
+  integrity sha512-Y2ZzyqVrznFJ3qmkva43BplyRIwjVSfIqhWLQqbC8mDG/V52zkwBD8ONLjk1HL7s48xmLO6uDO/pOuPXQuxpzA==
   dependencies:
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/hash" "^5.7.0"
@@ -1019,6 +1019,11 @@
   version "2.0.4"
   resolved "https://registry.npmjs.org/@types/http-errors/-/http-errors-2.0.4.tgz"
   integrity sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==
+
+"@types/js-cookie@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-3.0.6.tgz#a04ca19e877687bd449f5ad37d33b104b71fdf95"
+  integrity sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==
 
 "@types/json5@^0.0.29":
   version "0.0.29"
@@ -3217,6 +3222,11 @@ jose@^5.2.2:
   version "5.2.3"
   resolved "https://registry.npmjs.org/jose/-/jose-5.2.3.tgz"
   integrity sha512-KUXdbctm1uHVL8BYhnyHkgp3zDX5KW8ZhAKVFEfUbU2P8Alpzjb+48hHvjOdQIyPshoblhzsuqOwEEAbtHVirA==
+
+js-cookie@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
+  integrity sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==
 
 js-sha3@0.8.0:
   version "0.8.0"
