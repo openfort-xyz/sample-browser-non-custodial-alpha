@@ -10,6 +10,7 @@ import {
 import Openfort, {EmbeddedState, MissingRecoveryMethod, OAuthProvider, PasswordRecovery,} from "@openfort/openfort-js";
 import Image from "next/image";
 import {signOut as signout} from "@firebase/auth";
+import {response} from "express";
 
 const Demo: NextPage = () => {
   const [allowLogout, setAllowLogout] = useState(true);
@@ -159,8 +160,10 @@ const Demo: NextPage = () => {
           collectResponseJSON.data.nextAction.payload.userOpHash
         );
         console.log("response", response);
-      }
+        document.getElementById('minted-nft-link')!.setAttribute('href', `https://mumbai.polygonscan.com/tx/${response.response?.transactionHash}`);
+        document.getElementById('minted-nft-link')!.innerText = `Minted NFT: ${response.response?.transactionHash}`;
 
+      }
       console.log("success:", collectResponseJSON.data);
       alert("Action performed successfully");
     } catch (error) {
@@ -210,6 +213,9 @@ const Demo: NextPage = () => {
           <h2 className="login-signup-title">{"NFTs"}</h2>
           <div className="nft-container">
             <Image className="nft-image" src={nftImageBase64} alt={"NFT"} width={128} height={128}/>
+          </div>
+          <div className="button-group">
+            <a id='minted-nft-link' className="nft-link" href="#" target="_blank" rel="noreferrer noopener"></a>
           </div>
           <div className="button-group">
             {allowMint ? (<div>
