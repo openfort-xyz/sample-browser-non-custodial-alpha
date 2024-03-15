@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 
 const openfort = new Openfort(
   process.env.NEXTAUTH_OPENFORT_SECRET_KEY!,
-  "http://localhost:3000"
 );
 
 export default async function handler(
@@ -32,8 +31,8 @@ export default async function handler(
   if (authResult) {
     const playerId = authResult.playerId;
 
-    const policy_id = "pol_d8e4f80c-e638-480f-9d7d-a675c9678760";
-    const contract_id = "con_00708c46-b492-48d6-a682-5bdbb36dc29a";
+    const policy_id = "pol_150c7e49-cfd1-4b78-bf4d-148fb304a8d3";
+    const contract_id = "con_6a928e76-ca45-41e8-a524-2454e8c78197";
     const chainId = 80001;
     const optimistic = true;
 
@@ -57,8 +56,9 @@ export default async function handler(
       });
     } catch (e: any) {
       console.log(e);
+      res.statusCode = 500;
       return res.send({
-        data: null,
+        error: e.message,
       });
     }
   }

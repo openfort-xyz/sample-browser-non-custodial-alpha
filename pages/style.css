@@ -1,7 +1,7 @@
 .login-signup-container {
     width: 700px;
     height: 450px;
-    margin: 50px auto;
+    margin: 120px auto;
     padding: 60px 200px;
     border: 1px solid #f1f1f1;
     border-radius: 3px;
@@ -28,7 +28,7 @@
 
 .recovery-input-group {
     margin-bottom: 20px;
-    margin-top: 70px;
+    margin-top: 150px;
 }
 
 .input-group input {
@@ -41,7 +41,36 @@
 
 .button-group {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #000;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.dot {
+    margin-left: 420px;
+    color: #ff7d2e;
+    border-radius: 50%;
+    animation: dotFlashing 1s infinite linear alternate;
+    animation-delay: 0s;
+}
+
+
+
 
 .google-login-btn {
     background-color: white;
@@ -117,6 +146,43 @@
 
 .toggle-text {
     text-align: center;
+}
+
+.logout-container {
+    margin-top: -90px;
+    margin-bottom: 55px;
+}
+
+.logo {
+    margin-top: -100px;
+    margin-bottom: 70px;
+    margin-left: -175px;
+    fill: #9b9b9b;
+}
+
+.logout-text {
+    padding-left: 420px;
+    color: #ff7d2e;
+    cursor: pointer;
+}
+
+.link {
+    color: #7c7c7c;
+    cursor: pointer;
+    padding-bottom: 10px;
+}
+
+.demo {
+    text-align: center;
+    color: #7c7c7c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: #f1f1f1;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .toggle-text span {
