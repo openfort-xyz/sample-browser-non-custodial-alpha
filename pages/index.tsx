@@ -110,13 +110,18 @@ const Demo: NextPage = () => {
 
   async function setPasswordRecovery() {
     try {
-      console.log("setting password recovery");
       setAllowSetPasswordRecovery(false);
       const password = (
           document.querySelector(
             'input[name="passwordRecovery"]'
           ) as HTMLInputElement
       ).value;
+
+      if (password.length < 4) {
+        alert("Password recovery must be at least 4 characters");
+        return;
+      }
+
       console.log("password");
       const passwordRecovery = new PasswordRecovery(password);
       console.log("configuring recovery method");
