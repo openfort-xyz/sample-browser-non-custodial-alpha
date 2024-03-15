@@ -172,6 +172,13 @@
     padding-bottom: 10px;
 }
 
+.nft-link {
+    color: #ff7d2e;
+    cursor: pointer;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
 .demo {
     text-align: center;
     color: #7c7c7c;
