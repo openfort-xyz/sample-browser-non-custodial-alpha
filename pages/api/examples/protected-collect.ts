@@ -1,10 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Openfort from "@openfort/openfort-node";
-import Cookies from "js-cookie";
 
-const openfort = new Openfort(
-  process.env.NEXTAUTH_OPENFORT_SECRET_KEY!,
-);
+const openfort = new Openfort(process.env.NEXTAUTH_OPENFORT_SECRET_KEY!);
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,7 +11,8 @@ export default async function handler(
   if (!accessToken) {
     res.statusCode = 401;
     return res.send({
-      error: "You must be signed in to view the protected content on this page.",
+      error:
+        "You must be signed in to view the protected content on this page.",
     });
   }
 
@@ -22,10 +20,10 @@ export default async function handler(
   if (!accessToken) {
     res.statusCode = 401;
     return res.send({
-      error: "You must be signed in to view the protected content on this page.",
+      error:
+        "You must be signed in to view the protected content on this page.",
     });
   }
-
 
   const authResult = await openfort.iam.verifyAuthToken(accessToken);
   if (authResult) {
