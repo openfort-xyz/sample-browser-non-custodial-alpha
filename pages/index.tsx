@@ -7,11 +7,15 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import Openfort, {EmbeddedState, MissingRecoveryMethod, OAuthProvider, PasswordRecovery,} from "@openfort/openfort-js";
+import Openfort, {
+  EmbeddedState,
+  MissingRecoveryMethod,
+  OAuthProvider,
+  PasswordRecovery,
+  TokenType
+} from "@openfort/openfort-js";
 import Image from "next/image";
 import {signOut as signout} from "@firebase/auth";
-import {response} from "express";
-import {TokenType} from "@openfort/openfort-js/dist/generated";
 
 const Demo: NextPage = () => {
   const [allowLogout, setAllowLogout] = useState(true);
