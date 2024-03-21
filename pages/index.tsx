@@ -168,7 +168,7 @@ const Demo: NextPage = () => {
       if (collectResponseJSON.data?.nextAction) {
         const response = await openfort.sendSignatureTransactionIntentRequest(
           collectResponseJSON.data.id,
-          collectResponseJSON.data.nextAction.payload.userOpHash
+          collectResponseJSON.data.nextAction.payload.userOperationHash
         );
         console.log("response", response);
         document
