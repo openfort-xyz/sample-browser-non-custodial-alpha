@@ -11,6 +11,7 @@ import Openfort, {EmbeddedState, MissingRecoveryMethod, OAuthProvider, PasswordR
 import Image from "next/image";
 import {signOut as signout} from "@firebase/auth";
 import {response} from "express";
+import {TokenType} from "@openfort/openfort-js/dist/generated";
 
 const Demo: NextPage = () => {
   const [allowLogout, setAllowLogout] = useState(true);
@@ -95,9 +96,10 @@ const Demo: NextPage = () => {
 
   async function authenticateWithOpenfort(identityToken: string) {
     try {
-      const accessToken = await openfort.authenticateOAuth(
+      const accessToken = await openfort.authenticateWithOAuth(
         OAuthProvider.Firebase,
-        identityToken
+        identityToken,
+        TokenType.IdToken
       );
       await openfort.configureEmbeddedSigner();
     } catch (error) {
