@@ -12,6 +12,7 @@ import Openfort, {
   MissingRecoveryMethod,
   OAuthProvider,
   PasswordRecovery,
+  TokenType,
 } from "@openfort/openfort-js";
 import Image from "next/image";
 import { signOut as signout } from "@firebase/auth";
@@ -107,7 +108,7 @@ const Demo: NextPage = () => {
       const accessToken = await openfort.authenticateWithOAuth(
         OAuthProvider.Firebase,
         identityToken,
-        "idToken"
+        TokenType.IdToken
       );
       await openfort.configureEmbeddedSigner();
     } catch (error) {
