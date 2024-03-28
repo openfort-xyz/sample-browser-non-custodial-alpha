@@ -878,24 +878,26 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@openfort/openfort-js@0.5.22":
-  version "0.5.22"
-  resolved "https://registry.npmjs.org/@openfort/openfort-js/-/openfort-js-0.5.22.tgz#535e84360597205452fa12bd0838bcc7b2a6d351"
-  integrity sha512-W7DXJ9SCRj89f3a5MW3XD9NyD+cnoxP5Nr54L9r0qpTvkEcFDNV6Kyjgz8bWWbpIsYKUCsH4xoPk/xGmMhhNVA==
+"@openfort/openfort-js@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.6.0.tgz#80e783055aebb550a09aedf9b77907ceb8040293"
+  integrity sha512-dhvzP7qYE26XraNT+G+PlEnJMmVhF2+R76qsNBwf5t1KisPJY/vxA5p8VFBpXlH0PXJXGLYQX3y7x0J+AWdHfw==
   dependencies:
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/hash" "^5.7.0"
     "@ethersproject/signing-key" "^5.7.0"
     "@noble/curves" "^1.1.0"
+    "@openfort/shield-js" "^0.0.3"
     axios "1.6.7"
+    crypto-js "^4.2.0"
     es6-promise "^4.2.8"
     jose "^5.2.2"
     path "^0.12.7"
 
-"@openfort/openfort-node@^0.6.45":
-  version "0.6.45"
-  resolved "https://registry.npmjs.org/@openfort/openfort-node/-/openfort-node-0.6.45.tgz"
-  integrity sha512-+qSqpidli44Ij+f2K1oTXLIa1V5ncQnZAyrvg3SaNbJWppo/Luvn/3fwG4wAp0M9QvBJhfCsJepn3f4miC0jmg==
+"@openfort/openfort-node@^0.6.47":
+  version "0.6.47"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-node/-/openfort-node-0.6.47.tgz#7cd070cfeed5e9f514ae5906144c37d367ee209a"
+  integrity sha512-5Sx4i+951hDSZxJUUffCcT5ylw/XlZ5tU2CNGSktZ8bnGXCYfdKX5yt3h7w/SmDiCMohllu5LrnRP7VyBN8nDw==
   dependencies:
     "@types/node" "*"
     "@types/node-fetch" "^2.5.7"
@@ -904,6 +906,14 @@
     node-fetch "^2.6.0"
     typedoc "^0.22.16"
     url-parse "^1.4.3"
+
+"@openfort/shield-js@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@openfort/shield-js/-/shield-js-0.0.3.tgz#6987821e9c058ce46c1ef68e375932c4ec0a9974"
+  integrity sha512-LIZ6z8URQchb5aBwjOV4ZN3HQ75vKYctJ03gIwgnv3Orx7BOxnkKZ/tWnh3S3QwpZl0l3RCrsafQdpJ2aca0PQ==
+  dependencies:
+    axios "^1.6.8"
+    typescript "^5.4.3"
 
 "@panva/asn1.js@^1.0.0":
   version "1.0.0"
@@ -1462,6 +1472,15 @@ axios@1.6.7:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
+axios@^1.6.8:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
+  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
+  dependencies:
+    follow-redirects "^1.15.6"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
 axobject-query@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/axobject-query/-/axobject-query-3.2.1.tgz"
@@ -1757,6 +1776,11 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
@@ -2532,6 +2556,11 @@ follow-redirects@^1.15.4:
   version "1.15.5"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.5.tgz"
   integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
+
+follow-redirects@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -4828,6 +4857,11 @@ typescript@5.0.4:
   version "5.0.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+
+typescript@^5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.3.tgz#5c6fedd4c87bee01cd7a528a30145521f8e0feff"
+  integrity sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

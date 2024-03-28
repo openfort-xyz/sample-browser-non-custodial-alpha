@@ -10,8 +10,9 @@
     "prettier": "prettier -w \"**/*.ts\" \"**/*.tsx\""
   },
   "dependencies": {
-    "@openfort/openfort-js": "^0.5.25",
+    "@openfort/openfort-js": "^0.6.0",
     "@openfort/openfort-node": "^0.6.47",
+    "axios": "^1.6.8",
     "firebase": "^9.12.1",
     "firebase-admin": "^9.11.1",
     "js-cookie": "^3.0.5",
