@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { NextPage } from "next";
+import {useEffect, useMemo, useState} from "react";
+import {NextPage} from "next";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -8,15 +8,14 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import Openfort, {
+  AuthType,
   EmbeddedState,
   MissingRecoveryMethod,
-  OAuthProvider,
-  PasswordRecovery,
+  OAuthProvider, ShieldAuthentication,
   TokenType,
 } from "@openfort/openfort-js";
 import Image from "next/image";
-import { signOut as signout } from "@firebase/auth";
-import { response } from "express";
+import {signOut as signout} from "@firebase/auth";
 
 const Demo: NextPage = () => {
   const [allowLogout, setAllowLogout] = useState(true);
@@ -27,9 +26,10 @@ const Demo: NextPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [getState, setState] = useState(EmbeddedState.NONE);
   const [polling, setPolling] = useState(true);
+  const [idToken, setIdToken] = useState("");
   const auth = getAuth();
   const openfort = useMemo(
-    () => new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY),
+    () => new Openfort(process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!, process.env.NEXT_PUBLIC_SHIELD_API_KEY),
     []
   );
 
@@ -77,6 +77,7 @@ const Demo: NextPage = () => {
         );
       }
       const idToken = await userCredential.user.getIdToken();
+      setIdToken(idToken);
       await authenticateWithOpenfort(idToken);
     } catch (error) {
       console.log(error);
@@ -93,6 +94,7 @@ const Demo: NextPage = () => {
       const googleProvider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
+      setIdToken(idToken);
       await authenticateWithOpenfort(idToken);
     } catch (error) {
       console.log(error);
@@ -105,12 +107,20 @@ const Demo: NextPage = () => {
 
   async function authenticateWithOpenfort(identityToken: string) {
     try {
-      const accessToken = await openfort.authenticateWithOAuth(
+      openfort.useThirdPartyProvider(
         OAuthProvider.Firebase,
         identityToken,
         TokenType.IdToken
       );
-      await openfort.configureEmbeddedSigner();
+      if (isLogin) {
+        const shieldAuth: ShieldAuthentication = {
+          auth: AuthType.OPENFORT,
+          token: idToken,
+          authProvider: "firebase",
+          tokenType: "idToken",
+        }
+        await openfort.configureEmbeddedSigner(80001, shieldAuth);
+      }
     } catch (error) {
       if (!(error instanceof MissingRecoveryMethod)) {
         console.log(error);
@@ -134,11 +144,32 @@ const Demo: NextPage = () => {
         return;
       }
 
-      console.log("password");
-      const passwordRecovery = new PasswordRecovery(password);
-      console.log("configuring recovery method");
-      await openfort.configureEmbeddedSignerRecovery(passwordRecovery, 80001);
-      console.log("configured recovery method");
+      const shieldAuth: ShieldAuthentication = {
+        auth: AuthType.OPENFORT,
+        token: idToken,
+        authProvider: "firebase",
+        tokenType: "idToken",
+      }
+      await openfort.configureEmbeddedSignerRecovery(80001, shieldAuth,password);
+    } catch (error) {
+      console.log(error);
+      window.alert(error);
+      await logout();
+    } finally {
+      setAllowSetPasswordRecovery(true);
+    }
+  }
+
+  async function setAutomaticRecovery() {
+      try {
+      setAllowSetPasswordRecovery(false);
+      const shieldAuth: ShieldAuthentication = {
+        auth: AuthType.OPENFORT,
+        token: idToken,
+        authProvider: "firebase",
+        tokenType: "idToken",
+      }
+      await openfort.configureEmbeddedSigner(80001, shieldAuth);
     } catch (error) {
       console.log(error);
       window.alert(error);
@@ -170,7 +201,6 @@ const Demo: NextPage = () => {
           collectResponseJSON.data.id,
           collectResponseJSON.data.nextAction.payload.userOperationHash
         );
-        console.log("response", response);
         document
           .getElementById("minted-nft-link")!
           .setAttribute(
@@ -181,7 +211,6 @@ const Demo: NextPage = () => {
           "minted-nft-link"
         )!.innerText = `Minted NFT: ${response.response?.transactionHash}`;
       }
-      console.log("success:", collectResponseJSON.data);
       alert("Action performed successfully");
     } catch (error) {
       console.error("Error:", error);
@@ -294,12 +323,22 @@ const Demo: NextPage = () => {
             </div>
             <div className="button-group">
               {allowSetPasswordRecovery ? (
-                <button
-                  className="login-login-btn"
-                  onClick={setPasswordRecovery}
-                >
-                  {"Submit"}
-                </button>
+                  <div>
+                  <div className="button-group">
+                    <button
+                        className="login-login-btn"
+                        onClick={setPasswordRecovery}
+                    >
+                      {"Submit"}
+                    </button>
+                  </div>
+                  <div className="button-group">
+                    <button
+                        className="google-login-btn"
+                        onClick={setAutomaticRecovery}
+                    >{"Continue with Automatic Recovery"}</button>
+                  </div>
+                  </div>
               ) : (
                 <div>
                   <div className="spinner"></div>
