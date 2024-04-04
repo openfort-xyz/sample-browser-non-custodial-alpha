@@ -5,6 +5,7 @@ export default function Header(props: any) {
       <a
         href="https://github.com/openfort-xyz/sample-browser-nextjs-embedded-signer"
         target="_blank"
+        rel="noreferrer"
         className="text-blue-500"
       >
         (View Source)
