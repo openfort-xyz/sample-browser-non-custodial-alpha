@@ -4,6 +4,8 @@ This sample shows you how to use Openfort's Embedded Signer.
 
 It supports login with all regular auth providers and uses Firebase as external authentication platform.
 
+Documentation for [embedded signer](https://www.openfort.xyz/docs/guides/auth/embedded-signer).
+
 ## Features
 
 - 🚀 NextJS, FirebaseAuth & Tailwindcss with Typescript
@@ -11,7 +13,6 @@ It supports login with all regular auth providers and uses Firebase as external 
 - 🔒 Client-side authentication sample with Credentials/Google Signin
 - 🔒 Server-side authentication with cookies sample
 - 🦚 with Tailwindcss layout
-- Wagmi as React Hooks for Ethereum
 
 ## How to run locally
 
