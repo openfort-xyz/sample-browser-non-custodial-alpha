@@ -21,9 +21,7 @@ const MintNFTButton: React.FC = () => {
       if (!transactionHash) {
         throw new Error("Failed to mint NFT");
       }
-      setTransactionHash(
-        `https://mumbai.polygonscan.com/tx/${transactionHash}`
-      );
+      setTransactionHash(`https://www.oklink.com/amoy/tx/${transactionHash}`);
 
       alert("NFT minted successfully!");
     } catch (err) {

@@ -38,7 +38,7 @@ NEXTAUTH_OPENFORT_SECRET_KEY=<replace-with-your-secret-key>
 You can create Policies and add Contracts in the Dashboard or with the API. This sample requires a Policy and a Contract to run. Once you've created them, and add its ID to `CollectButton`.
 
 `contract_id` is the ID of a [Contract](https://www.openfort.xyz/docs/reference/api/create-contract-object) for your contract. A contract has a chainId. 
-If you need a test contract address, use 0x38090d1636069c0ff1Af6bc1737Fb996B7f63AC0 (NFT contract deployed in 80001 Mumbai).
+If you need a test contract address, use 0x2522F4Fc9aF2E1954a3D13f7a5B2683A00a4543A (NFT contract deployed in 80002 Amoy).
 
 `policy_id` is the ID of a [Policy](https://www.openfort.xyz/docs/reference/api/create-a-policy-object) for your contract. A policy has a contract and chainId. For this demo to work, the policy must have both the contract and the register sessions as rules.
 

@@ -1,7 +1,7 @@
 import { AuthType, OAuthProvider, ShieldAuthentication, TokenType } from '@openfort/openfort-js';
 import { openfort } from '../utils/openfortConfig';
 
-const chainId = 80001;
+const chainId = 80002;
 
 class OpenfortService {
     async authenticateWithThirdPartyProvider(identityToken: string): Promise<void> {

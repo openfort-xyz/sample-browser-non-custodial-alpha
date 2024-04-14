@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import openfort from '../../utils/openfortAdminConfig';
 
-const policy_id = 'pol_0b74cbac-146b-4a1e-98e1-66e83aef5deb';
-const contract_id = 'con_42883506-04d5-408e-93da-2151e293a82b';
-const chainId = 80001;
+const policy_id = 'pol_30873bf9-929a-4273-ad4f-48842eea403b';
+const contract_id = 'con_8d6b19e8-3a5a-4643-8dee-778997a7dffc';
+const chainId = 80002;
 const optimistic = true;
 
 export default async function handler(
