@@ -41,9 +41,9 @@ export const useOpenfort = () => {
   }, [isPolling]);
 
   // Assume openfortService has been updated to handle these states and actions
-  const authenticateWithOpenfort = useCallback(async (identityToken: string) => {
+  const authenticateWithOpenfort = useCallback((identityToken: string) => {
     try {
-      await openfortService.authenticateWithThirdPartyProvider(identityToken);
+      openfortService.authenticateWithThirdPartyProvider(identityToken);
     } catch (error) {
       console.error('Error authenticating with Openfort:', error);
       setError(error instanceof Error ? error : new Error('An error occurred during Openfort authentication'));

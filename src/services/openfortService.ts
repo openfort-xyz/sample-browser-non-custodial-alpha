@@ -4,7 +4,7 @@ import { openfort } from '../utils/openfortConfig';
 const chainId = 80002;
 
 class OpenfortService {
-    async authenticateWithThirdPartyProvider(identityToken: string): Promise<void> {
+    authenticateWithThirdPartyProvider(identityToken: string): void {
       try {
         openfort.authenticateWithThirdPartyProvider(OAuthProvider.Firebase, identityToken, TokenType.IdToken);
       } catch (error) {

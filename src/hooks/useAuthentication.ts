@@ -24,7 +24,7 @@ export const useAuthentication = () => {
     try {
       const userCredential = await authService.signIn(email, password);
       const idToken = await userCredential.user.getIdToken();
-      await authenticateWithOpenfort(idToken);
+      authenticateWithOpenfort(idToken);
       setUser(userCredential.user);
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export const useAuthentication = () => {
     try {
       const userCredential = await authService.signInWithGoogle();
       const idToken = await userCredential.user.getIdToken();
-      await authenticateWithOpenfort(idToken);
+      authenticateWithOpenfort(idToken);
       setUser(userCredential.user);
     } catch (error) {
       console.error(error);
@@ -49,7 +49,7 @@ export const useAuthentication = () => {
     try {
       const userCredential = await authService.signUp(email, password);
       const idToken = await userCredential.user.getIdToken();
-      await authenticateWithOpenfort(idToken);
+      authenticateWithOpenfort(idToken);
       setUser(userCredential.user);
     } catch (error) {
       console.error(error);
