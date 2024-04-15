@@ -11,7 +11,7 @@ const NFTDisplay: React.FC<NFTDisplayProps> = ({
   alt = "NFT Image",
 }) => {
   return (
-    <div className="flex justify-center items-center w-full my-2.5 pt-10 pb-5">
+    <div className="flex justify-center items-center w-full my-2.5 pt-5 pb-2">
       <Image
         src={imageUrl}
         alt={alt}

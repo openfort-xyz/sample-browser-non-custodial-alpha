@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import { authService } from '../services/authService';
 import { useOpenfort } from './useOpenfort';
+import { MissingRecoveryMethod } from '@openfort/openfort-js';
 export const useAuthentication = () => {
   const [user, setUser] = useState<User | null>(null);
   const [idToken, setIdToken] = useState<string | null>(null); 
   const [loading, setLoading] = useState<boolean>(true);
-  const {authenticateWithOpenfort, logout:signOut} = useOpenfort();
+  const {authenticateWithOpenfort, logout:signOut, handleRecovery} = useOpenfort();
 
   // Listen for changes to the authentication state (login, logout)
   useEffect(() => {
@@ -24,8 +25,13 @@ export const useAuthentication = () => {
     try {
       const userCredential = await authService.signIn(email, password);
       const idToken = await userCredential.user.getIdToken();
-      authenticateWithOpenfort(idToken);
+      await authenticateWithOpenfort(idToken);
       setUser(userCredential.user);
+      await handleRecovery('automatic',idToken).catch((error) => {
+        if(error instanceof MissingRecoveryMethod){
+          console.log("Automatic recovery not enabled for this user.");
+        }
+      });
     } catch (error) {
       console.error(error);
       throw error;
@@ -36,7 +42,7 @@ export const useAuthentication = () => {
     try {
       const userCredential = await authService.signInWithGoogle();
       const idToken = await userCredential.user.getIdToken();
-      authenticateWithOpenfort(idToken);
+      await authenticateWithOpenfort(idToken);
       setUser(userCredential.user);
     } catch (error) {
       console.error(error);
@@ -49,7 +55,7 @@ export const useAuthentication = () => {
     try {
       const userCredential = await authService.signUp(email, password);
       const idToken = await userCredential.user.getIdToken();
-      authenticateWithOpenfort(idToken);
+      await authenticateWithOpenfort(idToken);
       setUser(userCredential.user);
     } catch (error) {
       console.error(error);

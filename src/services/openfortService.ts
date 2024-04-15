@@ -1,12 +1,12 @@
-import { AuthType, OAuthProvider, ShieldAuthentication, TokenType } from '@openfort/openfort-js';
+import { AuthPlayerResponse, AuthType, MissingRecoveryMethod, OAuthProvider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 import { openfort } from '../utils/openfortConfig';
 
 const chainId = 80002;
 
 class OpenfortService {
-    authenticateWithThirdPartyProvider(identityToken: string): void {
+    async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
       try {
-        openfort.authenticateWithThirdPartyProvider(OAuthProvider.Firebase, identityToken, TokenType.IdToken);
+        return await openfort.authenticateWithThirdPartyProvider(OAuthProvider.Firebase, identityToken, TokenType.IdToken);
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);
         throw error;
@@ -40,7 +40,22 @@ class OpenfortService {
         return null
       }
     }
-    
+    async signMessage(message: string): Promise<string | null> {
+      try {
+        return await openfort.signMessage(message);
+      } catch (error) {
+        console.error("Error:", error);
+        return null
+      }
+    }
+    async signTypedData(domain: TypedDataDomain, types: Record<string, Array<TypedDataField>>, value: Record<string, any>): Promise<string | null> {
+      try {
+        return await openfort.signTypedData(domain, types, value);
+      } catch (error) {
+        console.error("Error:", error);
+        return null
+      }
+    }
     async getEmbeddedState() {
       try {
         const state = await openfort.getEmbeddedState();

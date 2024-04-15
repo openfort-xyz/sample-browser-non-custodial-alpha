@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import openfortService from '../services/openfortService'; // Adjust the import path as needed
-import { EmbeddedState } from '@openfort/openfort-js';
+import { EmbeddedState, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 
 export const useOpenfort = () => {
   const [error, setError] = useState<Error | null>(null);
@@ -41,9 +41,9 @@ export const useOpenfort = () => {
   }, [isPolling]);
 
   // Assume openfortService has been updated to handle these states and actions
-  const authenticateWithOpenfort = useCallback((identityToken: string) => {
+  const authenticateWithOpenfort = useCallback(async(identityToken: string) => {
     try {
-      openfortService.authenticateWithThirdPartyProvider(identityToken);
+      await openfortService.authenticateWithThirdPartyProvider(identityToken);
     } catch (error) {
       console.error('Error authenticating with Openfort:', error);
       setError(error instanceof Error ? error : new Error('An error occurred during Openfort authentication'));
@@ -59,6 +59,27 @@ export const useOpenfort = () => {
       return null;
     }
   }, []);
+
+  const signMessage = useCallback(async (message: string): Promise<string | null> => {
+    try {
+      return await openfortService.signMessage(message);
+    } catch (error) {
+      console.error('Error signing message:', error);
+      setError(error instanceof Error ? error : new Error('An error occurred signing the message'));
+      return null;
+    }
+  }, []);
+
+  const signTypedData = useCallback(async (domain: TypedDataDomain, types: Record<string, Array<TypedDataField>>, value: Record<string, any>): Promise<string | null> => {
+    try {
+      return await openfortService.signTypedData(domain, types, value);
+    } catch (error) {
+      console.error('Error signing message:', error);
+      setError(error instanceof Error ? error : new Error('An error occurred signing the message'));
+      return null;
+    }
+  }, []);
+
 
   const handleRecovery = useCallback(async (method: "password"|"automatic", identityToken: string, pin?: string) => {
     try {
@@ -90,6 +111,8 @@ export const useOpenfort = () => {
     authenticateWithOpenfort,
     embeddedState,
     mintNFT,
+    signMessage,
+    signTypedData,
     handleRecovery,
     error,
     logout  
