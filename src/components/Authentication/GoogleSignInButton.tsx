@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext"; // Ensure correct path
+import React from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 
 const GoogleSignInButton: React.FC = () => {

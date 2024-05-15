@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAuthentication } from "../../hooks/useAuthentication";
 import { useOpenfort } from "../../hooks/useOpenfort";
 import Spinner from "../Shared/Spinner";
+import { useAuth } from "../../contexts/AuthContext";
 
 const AccountRecovery: React.FC = () => {
-  const { idToken } = useAuthentication();
+  const { idToken } = useAuth();
   const { handleRecovery } = useOpenfort();
   const [loadingPwd, setLoadingPwd] = useState(false);
   const [loadingAut, setLoadingAut] = useState(false);

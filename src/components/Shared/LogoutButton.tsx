@@ -7,7 +7,6 @@ const LogoutButton: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      alert("You've been logged out successfully."); // Consider a more sophisticated feedback mechanism
     } catch (error) {
       console.error("Logout failed:", error);
       alert("Logout failed. Please try again."); // Consider a more sophisticated feedback mechanism

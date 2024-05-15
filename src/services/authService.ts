@@ -6,15 +6,15 @@ import {
     GoogleAuthProvider, 
     signInWithPopup, 
     UserCredential, 
-    onAuthStateChanged,
-    User
+    User,
+    onIdTokenChanged
   } from 'firebase/auth';
   import { app } from '../utils/firebaseConfig'; 
 
   const auth = getAuth(app);
   
-  const onAuthStateChange = (callback: (user: User| null) => void) => {
-    return onAuthStateChanged(auth, (user) => {
+  const onIdTokenChange = (callback: (user: User| null) => void) => {
+    return onIdTokenChanged(auth, async(user) => {
       if (user) {
         // User is signed in.
         callback(user);
@@ -51,6 +51,6 @@ import {
     signIn,
     signInWithGoogle,
     logout: signOutUser,
-    onAuthStateChanged: onAuthStateChange,
+    onIdTokenChanged: onIdTokenChange,
   };
   

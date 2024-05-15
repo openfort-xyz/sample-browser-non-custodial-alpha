@@ -1,4 +1,4 @@
-import { AuthPlayerResponse, AuthType, MissingRecoveryMethod, OAuthProvider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
+import { AuthPlayerResponse, AuthType, OAuthProvider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 import { openfort } from '../utils/openfortConfig';
 
 const chainId = 80002;

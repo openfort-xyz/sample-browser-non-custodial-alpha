@@ -6,8 +6,8 @@ import Spinner from "../Shared/Spinner";
 const LoginSignupForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
-  const { signIn, signUp } = useAuthentication(); // Assuming these are the names
+  const [isLogin, setIsLogin] = useState(true);
+  const { signIn, signUp } = useAuthentication();
   const [loading, setLoading] = useState(false);
   const handleToggle = () => setIsLogin(!isLogin);
 

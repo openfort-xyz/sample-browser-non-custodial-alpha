@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useOpenfort } from "../../hooks/useOpenfort"; // Adjust the import path as needed
-import { useAuthentication } from "../../hooks/useAuthentication"; // Adjust the import path as needed
+import { useOpenfort } from "../../hooks/useOpenfort";
 import { EmbeddedState } from "@openfort/openfort-js";
 import Spinner from "../Shared/Spinner";
+import { useAuth } from "../../contexts/AuthContext";
 
 const MintNFTButton: React.FC = () => {
   const { mintNFT, embeddedState, error } = useOpenfort();
-  const { idToken } = useAuthentication();
+  const { idToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const handleMintNFT = async () => {

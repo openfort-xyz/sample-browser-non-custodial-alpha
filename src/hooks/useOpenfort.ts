@@ -5,42 +5,29 @@ import { EmbeddedState, TypedDataDomain, TypedDataField } from '@openfort/openfo
 export const useOpenfort = () => {
   const [error, setError] = useState<Error | null>(null);
   const [embeddedState, setEmbeddedState] = useState<EmbeddedState>(EmbeddedState.NONE);
-  const [isPolling, setIsPolling] = useState(true);
-  const isMounted = useRef(true);
+  const pollingRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Mark the component as mounted
-    isMounted.current = true;
-
     const pollEmbeddedState = async () => {
-      if (!isPolling) return;
+      try {
+        const state = await openfortService.getEmbeddedState();
+        setEmbeddedState(state);
+      } catch (error) {
+        console.error('Error checking embedded state with Openfort:', error);
+        if (pollingRef.current) clearInterval(pollingRef.current);
+      }
+    };
 
-      const interval = setInterval(async () => {
-        try {
-          const state = await openfortService.getEmbeddedState();
-          if (isMounted.current) {
-            setEmbeddedState(state);
-            if (state === EmbeddedState.READY) {
-              setIsPolling(false); // Stop polling
-            }
-          }
-        } catch (error) {
-          console.error('Error checking embedded state with Openfort:', error);
-          setIsPolling(false); // Optionally stop polling on error
-        }
-      }, 300);
-
-      return () => clearInterval(interval);
+    if (!pollingRef.current) {
+      pollingRef.current = setInterval(pollEmbeddedState, 300);
     }
 
-    pollEmbeddedState();
     return () => {
-      isMounted.current = false;
-      setIsPolling(false); // Ensure polling is stopped
+      if (pollingRef.current) clearInterval(pollingRef.current);
+      pollingRef.current = null;
     };
-  }, [isPolling]);
+  }, []);
 
-  // Assume openfortService has been updated to handle these states and actions
   const authenticateWithOpenfort = useCallback(async(identityToken: string) => {
     try {
       await openfortService.authenticateWithThirdPartyProvider(identityToken);
@@ -106,6 +93,7 @@ export const useOpenfort = () => {
       setError(error instanceof Error ? error : new Error('An error occurred during logout'));
     }
   }, []);
+
 
   return {
     authenticateWithOpenfort,
