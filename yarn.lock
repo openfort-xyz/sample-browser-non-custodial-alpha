@@ -887,17 +887,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-<<<<<<< HEAD
-"@openfort/openfort-js@^0.6.14":
-  version "0.6.14"
-  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.6.14.tgz#cb134fc8c606798554e68e6b92bfc07b97b498ea"
-  integrity sha512-SVU7O+EnqRYdkMmY49fCEacxVgyV8/3AzRByFVV5+7U11Z0TntnHyWEwB6GNkzsC5Q13I+9mFm8seElxfHgAGg==
-=======
-"@openfort/openfort-js@0.6.13":
-  version "0.6.13"
-  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.6.13.tgz#bf8a272fb0fb496141c71c83d16c8b93d81c72a9"
-  integrity sha512-plTHtuUXmGfj/ipYhX3GSsCjJgIxy/Q3efVpJPD3xWF2wZEcvX9Ie5/Y4mQa4oDdE49tCgh+rllGiZIXeWWnog==
->>>>>>> 2f32fe919f24fd54d2f7df0dcadf239e19afeefe
+"@openfort/openfort-js@^0.6.16":
+  version "0.6.16"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.6.16.tgz#a5df9203b85a8dc74ba42b10ce0f3e8fd7dc3d3a"
+  integrity sha512-L0LUcdak0+Qk7mhPsYDaggzH+c03w7oKz7qPFyTQBEX8I1a10Cgdncu2MttRi5pGNgJKppYckn2SjFrf/+8AWQ==
   dependencies:
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/hash" "^5.7.0"
