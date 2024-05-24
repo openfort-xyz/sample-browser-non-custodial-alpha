@@ -9,5 +9,4 @@ const openfortConfig = {
 // Initialize the Openfort SDK
 const openfort = new Openfort(openfortConfig.publicKey, openfortConfig.shieldApiKey, openfortConfig.shieldEncryptionShare);
 
-
-export { openfort };
+export default openfort;
