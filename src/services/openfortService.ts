@@ -1,12 +1,12 @@
 import { AuthPlayerResponse, AuthType, OAuthProvider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 import openfort from '../utils/openfortConfig';
 
-const chainId = 80002;
+const chainId = 13337;
 
 class OpenfortService {
     async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
       try {
-        return await openfort.authenticateWithThirdPartyProvider(OAuthProvider.Firebase, identityToken, TokenType.IdToken);
+        return await openfort.authenticateWithThirdPartyProvider(OAuthProvider.FIREBASE, identityToken, TokenType.ID_TOKEN);
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);
         throw error;
@@ -89,7 +89,7 @@ class OpenfortService {
           authProvider: "firebase",
           tokenType: "idToken",
         };
-        await openfort.configureEmbeddedSignerRecovery(chainId, shieldAuth, pin);
+        await openfort.configureEmbeddedSigner(chainId, shieldAuth, pin);
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);
         throw error;

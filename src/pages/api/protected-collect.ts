@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import openfort from '../../utils/openfortAdminConfig';
 
-const policy_id = 'pol_30873bf9-929a-4273-ad4f-48842eea403b';
-const contract_id = 'con_8d6b19e8-3a5a-4643-8dee-778997a7dffc';
-const chainId = 80002;
-const optimistic = true;
+const policy_id = 'pol_be4f381c-90ac-479d-862a-36fc724c3164';
+const contract_id = 'con_14eb6778-389c-441e-a908-e366007b3156';
+const chainId = 13337;
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,18 +29,18 @@ export default async function handler(
       });
     }
 
+    const currentTime = Date.now()
     const playerId = response.id;
     const interaction_mint = {
       contract: contract_id,
       functionName: 'mint',
-      functionArgs: [playerId],
+      functionArgs: [playerId, currentTime.toString()],
     };
 
     const transactionIntent = await openfort.transactionIntents.create({
       player: playerId,
       policy: policy_id,
       chainId,
-      optimistic,
       interactions: [interaction_mint],
     });
 

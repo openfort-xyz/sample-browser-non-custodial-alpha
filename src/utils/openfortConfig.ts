@@ -1,12 +1,18 @@
-import Openfort from '@openfort/openfort-js';
+import Openfort, { OpenfortConfiguration, ShieldConfiguration } from '@openfort/openfort-js';
 
-const openfortConfig = {
-  publicKey: process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
-  shieldApiKey: process.env.NEXT_PUBLIC_SHIELD_API_KEY,
-  shieldEncryptionShare: process.env.NEXT_PUBLIC_SHIELD_ENCRYPTION_SHARE,
-};
+
+const baseConfiguration: OpenfortConfiguration = {
+  publishableKey: process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY!,
+}
+const shieldConfiguration: ShieldConfiguration = {
+  shieldPublishableKey: process.env.NEXT_PUBLIC_SHIELD_API_KEY!,
+  shieldEncryptionKey: process.env.NEXT_PUBLIC_SHIELD_ENCRYPTION_SHARE!,
+}
 
 // Initialize the Openfort SDK
-const openfort = new Openfort(openfortConfig.publicKey, openfortConfig.shieldApiKey, openfortConfig.shieldEncryptionShare);
+const openfort = new Openfort({
+  baseConfiguration,
+  shieldConfiguration
+})
 
 export default openfort;
