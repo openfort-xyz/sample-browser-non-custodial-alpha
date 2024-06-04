@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import openfortService from '../services/openfortService'; // Adjust the import path as needed
-import { EmbeddedState, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
+import { EmbeddedState, Provider, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 
 export const useOpenfort = () => {
   const [error, setError] = useState<Error | null>(null);
@@ -34,6 +34,19 @@ export const useOpenfort = () => {
     } catch (error) {
       console.error('Error authenticating with Openfort:', error);
       setError(error instanceof Error ? error : new Error('An error occurred during Openfort authentication'));
+    }
+  }, []);
+
+  const getEvmProvider = useCallback((): Provider | null => {
+    try {
+      const externalProvider = openfortService.getEvmProvider();
+      if (!externalProvider) {
+        throw new Error('EVM provider is undefined');
+      }
+      return externalProvider
+    } catch (error) {
+      setError(error instanceof Error ? error : new Error('An error occurred getting EVM provider'));
+      return null
     }
   }, []);
 
@@ -100,6 +113,7 @@ export const useOpenfort = () => {
     embeddedState,
     mintNFT,
     signMessage,
+    getEvmProvider,
     signTypedData,
     handleRecovery,
     error,

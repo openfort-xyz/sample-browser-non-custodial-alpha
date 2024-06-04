@@ -1,14 +1,24 @@
-import { AuthPlayerResponse, AuthType, OAuthProvider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
+import { AuthPlayerResponse, Provider, AuthType, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 import openfort from '../utils/openfortConfig';
+import { ThirdPartyOAuthProvider } from '@openfort/openfort-js';
 
 const chainId = 80002;
 
 class OpenfortService {
     async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
       try {
-        return await openfort.authenticateWithThirdPartyProvider(OAuthProvider.FIREBASE, identityToken, TokenType.ID_TOKEN);
+        return await openfort.authenticateWithThirdPartyProvider({provider:ThirdPartyOAuthProvider.FIREBASE, token:identityToken, tokenType:TokenType.ID_TOKEN});
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);
+        throw error;
+      }
+    }
+    getEvmProvider(): Provider {
+      try {
+        return openfort.getEthereumProvider({policy:"pol_e7491b89-528e-40bb-b3c2-9d40afa4fefc", announceProvider:true});
+
+      } catch (error) {
+        console.error('Error on getEthereumProvider:', error);
         throw error;
       }
     }
@@ -42,6 +52,7 @@ class OpenfortService {
     }
     async signMessage(message: string): Promise<string | null> {
       try {
+        console.log("Signing message", openfort)
         return await openfort.signMessage(message);
       } catch (error) {
         console.error("Error:", error);
