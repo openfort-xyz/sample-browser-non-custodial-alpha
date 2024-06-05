@@ -1084,10 +1084,10 @@
     path "^0.12.7"
     uuid "^8.3.2"
 
-"@openfort/openfort-node@^0.6.56":
-  version "0.6.56"
-  resolved "https://registry.yarnpkg.com/@openfort/openfort-node/-/openfort-node-0.6.56.tgz#7170540c46450447c84fa2ffab7a97ffa2d8c7a2"
-  integrity sha512-ceGm9+3RVJV4FhKWp6zhhDyI63/ZmR7JrQDFkTphm4mhE3aDmnPrFvexg7Ps2CpnuMACv0nBksY5W9L/dl0pkA==
+"@openfort/openfort-node@^0.6.57":
+  version "0.6.57"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-node/-/openfort-node-0.6.57.tgz#779a2e14136ba05de4b299016580955995e1c112"
+  integrity sha512-iFTyLaT0ncXntmcS5gKTwx5I9C1LVHdxiSzFy6/LMDCXEexzGvQVutFhedjvu9wGa3r+p2XcteqQCGssfWrqRw==
   dependencies:
     "@openfort/shield-js" "^0.1.7"
     "@types/node" "*"
