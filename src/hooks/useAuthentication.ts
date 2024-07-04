@@ -32,8 +32,8 @@ export const useAuthentication = () => {
   };
 
   const logout = async () => {
-    await authService.logout();
     await signOut();
+    await authService.logout();
   };
 
   return { signIn, signUp, signInWithGoogle, logout };
