@@ -1,4 +1,4 @@
-import { AuthPlayerResponse, AuthType, OAuthProvider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
+import { AuthPlayerResponse, AuthType, OAuthProvider, ShieldAuthentication, ShieldAuthType, ThirdPartyOAuthProvider, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 import openfort from '../utils/openfortConfig';
 
 const chainId = 13337;
@@ -6,7 +6,7 @@ const chainId = 13337;
 class OpenfortService {
     async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
       try {
-        return await openfort.authenticateWithThirdPartyProvider(OAuthProvider.FIREBASE, identityToken, TokenType.ID_TOKEN);
+        return await openfort.authenticateWithThirdPartyProvider({provider:ThirdPartyOAuthProvider.FIREBASE, token:identityToken, tokenType:TokenType.ID_TOKEN});
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);
         throw error;
@@ -69,7 +69,7 @@ class OpenfortService {
     async setAutomaticRecoveryMethod(identityToken: string) {
       try {
         const shieldAuth: ShieldAuthentication = {
-          auth: AuthType.OPENFORT,
+          auth: ShieldAuthType.OPENFORT,
           token: identityToken,
           authProvider: "firebase",
           tokenType: "idToken",
@@ -84,7 +84,7 @@ class OpenfortService {
     async setPasswordRecoveryMethod(identityToken: string, pin: string) {
       try {
         const shieldAuth: ShieldAuthentication = {
-          auth: AuthType.OPENFORT,
+          auth: ShieldAuthType.OPENFORT,
           token: identityToken,
           authProvider: "firebase",
           tokenType: "idToken",

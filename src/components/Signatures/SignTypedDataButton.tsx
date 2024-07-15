@@ -183,6 +183,12 @@ const SignTypedDataButton: React.FC = () => {
       signature,
     ]);
 
+    const verifySigner = ethers.utils.recoverAddress(
+      hash as string,
+      signature as string
+    );
+    console.log("verifySigner: ", verifySigner);
+
     const tx = {
       to: address,
       data: encodedData,
@@ -209,7 +215,7 @@ const SignTypedDataButton: React.FC = () => {
         <button
           onClick={async () => {
             await handleVerifySignature(
-              "0xbE5BA737dF06c000c6a431218b77e693ef64c679"
+              "0x33Cd73AC831779e87BD2Cb0d49C0963a86CdC7D2"
             );
           }}
           className={`mt-2 w-64 px-4 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50`}
