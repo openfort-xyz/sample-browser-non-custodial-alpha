@@ -4,11 +4,12 @@ import { EmbeddedState } from "@openfort/openfort-js";
 import Spinner from "../Shared/Spinner";
 import { useAuth } from "../../contexts/AuthContext";
 
-const SignTypedDataButton: React.FC = () => {
+const SignTypedDataButton: React.FC<{
+  handleSetMessage: (message: string) => void;
+}> = ({ handleSetMessage }) => {
   const { signTypedData, embeddedState, error } = useOpenfort();
   const { idToken } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [signature, setSignature] = useState<string | null>(null);
   const handleSignTypedData = async () => {
     if (!idToken) {
       console.error("The Openfort integration isn't ready.");
@@ -49,7 +50,7 @@ const SignTypedDataButton: React.FC = () => {
       if (!signature) {
         throw new Error("Failed to sign message");
       }
-      setSignature(signature);
+      handleSetMessage(signature);
     } catch (err) {
       // Handle errors from minting process
       console.error("Failed to sign message:", err);
@@ -66,9 +67,6 @@ const SignTypedDataButton: React.FC = () => {
       >
         {loading ? <Spinner /> : "Sign Typed Message"}
       </button>
-      {signature && (
-        <p className="flex max-w-sm mt-2 overflow-auto">{signature}</p>
-      )}
       {error && (
         <p className="mt-2 text-red-500">{`Error: ${error.message}`}</p>
       )}

@@ -32,7 +32,7 @@ const LoginSignupForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="mx-auto flex w-full max-w-md flex-col px-4 sm:px-6">
       <h2 className="text-left mb-2 font-semibold text-xl">
         {isLogin ? "Sign In" : "Sign Up"}
       </h2>

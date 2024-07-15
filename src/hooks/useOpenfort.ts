@@ -60,9 +60,9 @@ export const useOpenfort = () => {
     }
   }, []);
 
-  const signMessage = useCallback(async (message: string): Promise<string | null> => {
+  const signMessage = useCallback(async (message: string, options?: {hashMessage: boolean; arrayifyMessage: boolean}): Promise<string | null> => {
     try {
-      return await openfortService.signMessage(message);
+      return await openfortService.signMessage(message, options);
     } catch (error) {
       console.error('Error signing message:', error);
       setError(error instanceof Error ? error : new Error('An error occurred signing the message'));

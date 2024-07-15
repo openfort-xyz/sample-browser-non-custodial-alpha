@@ -50,10 +50,10 @@ class OpenfortService {
         return null
       }
     }
-    async signMessage(message: string): Promise<string | null> {
+    async signMessage(message: string, options?: {hashMessage: boolean; arrayifyMessage: boolean}): Promise<string | null> {
       try {
         console.log("Signing message", openfort)
-        return await openfort.signMessage(message);
+        return await openfort.signMessage(message, options);
       } catch (error) {
         console.error("Error:", error);
         return null
