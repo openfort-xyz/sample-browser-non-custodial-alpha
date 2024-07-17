@@ -13,6 +13,7 @@ import EvmProviderButton from "../components/EvmProvider/EvmProviderButton";
 
 import { useAuth } from "../contexts/AuthContext";
 import CreateSessionButton from "../components/Sessions/CreateSessionButton";
+import ExportPrivateKeyButton from "../components/Export/ExportPrivateKeyButton";
 
 const HomePage: NextPage = () => {
   const { user } = useAuth();
@@ -73,11 +74,11 @@ const HomePage: NextPage = () => {
           </h2>
           <div>
             <span className="font-medium text-black">Backend action: </span>
-            <MintNFTButton handleSetMessage={handleSetMessage} />
+            <MintNFTButton handleSetMessage={handleSetMessage}/>
           </div>
           <div>
             <span className="font-medium text-black">Ethers provider: </span>
-            <EvmProviderButton handleSetMessage={handleSetMessage} />
+            <EvmProviderButton handleSetMessage={handleSetMessage}/>
           </div>
         </div>
         <div className="bg-white p-4 rounded-md shadow-2xl space-y-4">
@@ -87,20 +88,20 @@ const HomePage: NextPage = () => {
           <div>
             <span className="font-medium text-black">Message: </span>Hello
             World!
-            <SignMessageButton handleSetMessage={handleSetMessage} />
+            <SignMessageButton handleSetMessage={handleSetMessage}/>
           </div>
 
           <div>
             <span className="font-medium text-black">Typed message: </span>
             <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/openfort-xyz/sample-browser-nextjs-embedded-signer/blob/main/src/components/Signatures/SignTypedDataButton.tsx#L25"
-              className="text-blue-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/openfort-xyz/sample-browser-nextjs-embedded-signer/blob/main/src/components/Signatures/SignTypedDataButton.tsx#L25"
+                className="text-blue-600 hover:underline"
             >
               {"View typed message."}
             </a>
-            <SignTypedDataButton handleSetMessage={handleSetMessage} />
+            <SignTypedDataButton handleSetMessage={handleSetMessage}/>
           </div>
         </div>
         <div className="bg-white p-4 rounded-md shadow-2xl space-y-4">
@@ -108,7 +109,15 @@ const HomePage: NextPage = () => {
             Session keys
           </h2>
           <div>
-            <CreateSessionButton handleSetMessage={handleSetMessage} />
+            <CreateSessionButton handleSetMessage={handleSetMessage}/>
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-md shadow-2xl space-y-4">
+          <h2 className="flex justify-left font-medium text-xl pb-4">
+            Export Private Key
+          </h2>
+          <div>
+            <ExportPrivateKeyButton handleSetMessage={handleSetMessage}/>
           </div>
         </div>
       </div>

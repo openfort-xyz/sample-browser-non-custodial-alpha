@@ -14,6 +14,7 @@ const LoginSignupForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();
+    if (password.length === 0) return;
     if (isLogin) {
       // Assuming 'login' is provided for signing in
       await signIn(email, password).catch((error) => {
