@@ -70,6 +70,16 @@ export const useOpenfort = () => {
     }
   }, []);
 
+  const exportPrivateKey = useCallback(async (): Promise<string | null> => {
+    try {
+      return await openfortService.exportPrivateKey();
+    } catch (error) {
+      console.error('Error exporting private key:', error);
+      setError(error instanceof Error ? error : new Error('An error occurred exporting the private key'));
+      return null;
+    }
+  }, []);
+
   const signTypedData = useCallback(async (domain: TypedDataDomain, types: Record<string, Array<TypedDataField>>, value: Record<string, any>): Promise<string | null> => {
     try {
       return await openfortService.signTypedData(domain, types, value);
@@ -113,10 +123,11 @@ export const useOpenfort = () => {
     embeddedState,
     mintNFT,
     signMessage,
+    exportPrivateKey,
     getEvmProvider,
     signTypedData,
     handleRecovery,
     error,
-    logout  
+    logout
   }
 };

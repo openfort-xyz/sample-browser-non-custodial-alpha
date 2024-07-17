@@ -31,13 +31,13 @@ class OpenfortService {
             Authorization: `Bearer ${identityToken}`,
           },
         });
-  
+
         if (!collectResponse.ok) {
           alert("Failed to mint NFT status: " + collectResponse.status);
           return null
         }
         const collectResponseJSON = await collectResponse.json();
-  
+
         if (collectResponseJSON.data?.nextAction) {
           const response = await openfort.sendSignatureTransactionIntentRequest(
             collectResponseJSON.data.id,
@@ -59,6 +59,14 @@ class OpenfortService {
         return null
       }
     }
+    async exportPrivateKey(): Promise<string | null> {
+        try {
+            return await openfort.exportPrivateKey();
+        } catch (error) {
+            console.error("Error:", error);
+            return null
+        }
+    }
     async signTypedData(domain: TypedDataDomain, types: Record<string, Array<TypedDataField>>, value: Record<string, any>): Promise<string | null> {
       try {
         return await openfort.signTypedData(domain, types, value);
@@ -76,7 +84,23 @@ class OpenfortService {
         throw error;
       }
     }
-     
+
+    async getEncryptionSession(): Promise<string> {
+      const resp = await fetch(`/api/protected-create-encryption-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+        if (!resp.ok) {
+            throw new Error("Failed to create encryption session");
+        }
+
+        const respJSON = await resp.json();
+        return respJSON.session;
+    }
+
     async setAutomaticRecoveryMethod(identityToken: string) {
       try {
         const shieldAuth: ShieldAuthentication = {
@@ -84,6 +108,7 @@ class OpenfortService {
           token: identityToken,
           authProvider: "firebase",
           tokenType: "idToken",
+          encryptionSession: await this.getEncryptionSession(),
         };
         await openfort.configureEmbeddedSigner(chainId, shieldAuth);
       } catch (error) {
@@ -99,6 +124,7 @@ class OpenfortService {
           token: identityToken,
           authProvider: "firebase",
           tokenType: "idToken",
+          encryptionSession: await this.getEncryptionSession(),
         };
         await openfort.configureEmbeddedSigner(chainId, shieldAuth, pin);
       } catch (error) {
@@ -116,10 +142,9 @@ class OpenfortService {
     }
   }
 
-  
-  
+
+
   // Create a singleton instance of the OpenfortService
   const openfortService = new OpenfortService();
-  
+
   export default openfortService;
-  

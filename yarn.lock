@@ -1055,10 +1055,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@openfort/openfort-js@^0.7.16":
-  version "0.7.16"
-  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.7.16.tgz#a8db6d24f4741f9c33e6971cef91e1c5db701476"
-  integrity sha512-nE/xJs2uNTg9jEWvpxEl6D2+2gw/KPPyMSF9tLqkBHjUpBpHlSaLGbOVJbnA6Gc50GMzuhAE/MPaS/UbDQXXvg==
+"@openfort/openfort-js@^0.7.19":
+  version "0.7.19"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-js/-/openfort-js-0.7.19.tgz#7ac73cf59af8348e2450f85c8a3b47da5bc0db01"
+  integrity sha512-xq67sQELmV16FEGXPcbbO9k9nCt+iMzmcM2+MgY1p5sI7mqaNpr/h4ua97cQ5pOgBnIB1ZKWMtg66Hswe34zwA==
   dependencies:
     "@ethersproject/abstract-signer" "^5.7.0"
     "@ethersproject/bytes" "^5.7.0"
@@ -1078,10 +1078,10 @@
     stream-browserify "^3.0.0"
     uuid "^8.3.2"
 
-"@openfort/openfort-node@^0.6.57":
-  version "0.6.61"
-  resolved "https://registry.yarnpkg.com/@openfort/openfort-node/-/openfort-node-0.6.61.tgz#8e098a30d414031e984157c632b22c20bc5308b4"
-  integrity sha512-Rf/iSy0VoYaJojAEa2ZlDi7vt3OtYTlxMGPzsYiFjMaqLEeH/p0yzEObDw2jBp9fTwetE1qPZE87eY5D2lkBRw==
+"@openfort/openfort-node@^0.6.62":
+  version "0.6.62"
+  resolved "https://registry.yarnpkg.com/@openfort/openfort-node/-/openfort-node-0.6.62.tgz#59dcbca3c09ccc092c3b2836ac4f3b40c66a35a1"
+  integrity sha512-K3INl9LlWE9043H5qj5UAwUEm4mW/H+rR/m6/xzWEHEKGjVWRpYq3zFwxmEslVw51rIfEyVjmmgqKVZJ78uANw==
   dependencies:
     "@openfort/shield-js" "^0.1.7"
     "@types/node" "*"
