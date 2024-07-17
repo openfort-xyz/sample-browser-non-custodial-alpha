@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import openfortService from '../services/openfortService'; // Adjust the import path as needed
-import { EmbeddedState, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
+import { EmbeddedState, Provider, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 
 export const useOpenfort = () => {
   const [error, setError] = useState<Error | null>(null);
@@ -37,6 +37,19 @@ export const useOpenfort = () => {
     }
   }, []);
 
+  const getEvmProvider = useCallback((): Provider | null => {
+    try {
+      const externalProvider = openfortService.getEvmProvider();
+      if (!externalProvider) {
+        throw new Error('EVM provider is undefined');
+      }
+      return externalProvider
+    } catch (error) {
+      setError(error instanceof Error ? error : new Error('An error occurred getting EVM provider'));
+      return null
+    }
+  }, []);
+
   const mintNFT = useCallback(async (identityToken: string): Promise<string | null> => {
     try {
       return await openfortService.mintNFT(identityToken);
@@ -47,9 +60,9 @@ export const useOpenfort = () => {
     }
   }, []);
 
-  const signMessage = useCallback(async (message: string): Promise<string | null> => {
+  const signMessage = useCallback(async (message: string, options?: {hashMessage: boolean; arrayifyMessage: boolean}): Promise<string | null> => {
     try {
-      return await openfortService.signMessage(message);
+      return await openfortService.signMessage(message, options);
     } catch (error) {
       console.error('Error signing message:', error);
       setError(error instanceof Error ? error : new Error('An error occurred signing the message'));
@@ -100,6 +113,7 @@ export const useOpenfort = () => {
     embeddedState,
     mintNFT,
     signMessage,
+    getEvmProvider,
     signTypedData,
     handleRecovery,
     error,

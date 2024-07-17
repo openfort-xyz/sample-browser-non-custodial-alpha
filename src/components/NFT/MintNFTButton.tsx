@@ -4,11 +4,12 @@ import { EmbeddedState } from "@openfort/openfort-js";
 import Spinner from "../Shared/Spinner";
 import { useAuth } from "../../contexts/AuthContext";
 
-const MintNFTButton: React.FC = () => {
+const MintNFTButton: React.FC<{
+  handleSetMessage: (message: string) => void;
+}> = ({ handleSetMessage }) => {
   const { mintNFT, embeddedState, error } = useOpenfort();
   const { idToken } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const handleMintNFT = async () => {
     if (!idToken) {
       console.error("The Openfort integration isn't ready.");
@@ -21,7 +22,7 @@ const MintNFTButton: React.FC = () => {
       if (!transactionHash) {
         throw new Error("Failed to mint NFT");
       }
-      setTransactionHash(
+      handleSetMessage(
         `https://subnets-test.avax.network/beam/tx/${transactionHash}`
       );
     } catch (err) {
@@ -40,16 +41,7 @@ const MintNFTButton: React.FC = () => {
       >
         {loading ? <Spinner /> : "Mint NFT"}
       </button>
-      {transactionHash && (
-        <a
-          className="text-blue-500 hover:underline mt-2 truncate max-w-sm"
-          href={transactionHash}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          {transactionHash}
-        </a>
-      )}
+
       {error && (
         <p className="mt-2 text-red-500">{`Error: ${error.message}`}</p>
       )}

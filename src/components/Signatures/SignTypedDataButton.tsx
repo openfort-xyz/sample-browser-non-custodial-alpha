@@ -10,7 +10,9 @@ import { _TypedDataEncoder } from "ethers/lib/utils";
 const providerUrl =
   "https://eu.build.onbeam.com/rpc/testnet/14bfbcc5-49c1-40e8-82c2-025c9a1834e1";
 
-const SignTypedDataButton: React.FC = () => {
+const SignTypedDataButton: React.FC<{
+  handleSetMessage: (message: string) => void;
+}> = ({ handleSetMessage }) => {
   const { signTypedData, embeddedState, error } = useOpenfort();
   const { idToken } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -165,6 +167,7 @@ const SignTypedDataButton: React.FC = () => {
       if (!signature) {
         throw new Error("Failed to sign message");
       }
+      handleSetMessage(signature);
       setSignature(signature);
     } catch (err) {
       // Handle errors from minting process

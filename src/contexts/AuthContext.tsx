@@ -46,6 +46,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       if (user) {
         const token = await user.getIdToken(true);
         setIdToken(token);
+        await authenticateWithOpenfort(token);
       }
     }, 10 * 60 * 1000);
     return () => clearInterval(handle);

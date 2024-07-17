@@ -6,7 +6,11 @@ interface CustomLogoProps {
 
 export const CustomLogo: React.FC<CustomLogoProps> = ({ className }) => {
   return (
-    <svg viewBox="0 0 39 11" aria-hidden="true" className="block h-8 w-auto">
+    <svg
+      viewBox="0 0 39 11"
+      aria-hidden="true"
+      className="block h-8 w-auto sm:visible invisible"
+    >
       <path
         className="fill-zinc-400"
         transform="translate(0, 5) scale(0.04)"
