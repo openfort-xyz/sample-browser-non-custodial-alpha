@@ -33,7 +33,7 @@ const MintNFTButton: React.FC<{
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col">
       <button
         onClick={handleMintNFT}
         disabled={embeddedState !== EmbeddedState.READY}

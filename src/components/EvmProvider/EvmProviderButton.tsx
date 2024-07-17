@@ -12,9 +12,6 @@ const Provider1193ActionButton: React.FC<{
 
   const handleSendTransaction = async () => {
     const provider = getEvmProvider();
-    if (!provider) {
-      throw new Error("Failed to get EVM provider");
-    }
     setLoading(true);
     const web3Provider = new ethers.providers.Web3Provider(provider);
     const signer = web3Provider.getSigner();
@@ -44,7 +41,7 @@ const Provider1193ActionButton: React.FC<{
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col">
       <button
         onClick={handleSendTransaction}
         disabled={embeddedState !== EmbeddedState.READY}

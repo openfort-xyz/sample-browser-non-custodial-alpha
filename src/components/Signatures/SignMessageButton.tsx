@@ -23,7 +23,7 @@ const SignMessageButton: React.FC<{
       if (!signature) {
         throw new Error("Failed to sign message");
       }
-      handleSetMessage(signature);
+      handleSetMessage(`Signature: \n${signature}`);
     } catch (err) {
       // Handle errors from minting process
       console.error("Failed to sign message:", err);
@@ -32,7 +32,7 @@ const SignMessageButton: React.FC<{
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col">
       <button
         onClick={handleSignMessage}
         disabled={embeddedState !== EmbeddedState.READY}
