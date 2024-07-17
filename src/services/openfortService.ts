@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { AuthPlayerResponse, AuthType, OAuthProvider, ShieldAuthentication, ShieldAuthType, ThirdPartyOAuthProvider, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
-=======
-import { AuthPlayerResponse, Provider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField, ShieldAuthType } from '@openfort/openfort-js';
->>>>>>> main
 import openfort from '../utils/openfortConfig';
-import { ThirdPartyOAuthProvider } from '@openfort/openfort-js';
 
 const chainId = 13337;
 
