@@ -27,7 +27,7 @@ const SignTypedDataButton: React.FC<{
 
       const signature = await signTypedData(domain, types, data);
       const hash = await _TypedDataEncoder.hash(domain, types, data);
-      console.log("hash: ", hash);
+
       setHash(hash);
       setLoading(false);
       if (!signature) {
@@ -46,7 +46,8 @@ const SignTypedDataButton: React.FC<{
     setLoadingVerify(true);
     const provider = getEvmProvider();
     const web3Provider = new ethers.providers.Web3Provider(provider);
-    const address = await web3Provider.getSigner().getAddress();
+    const signer = await web3Provider.getSigner();
+    const address = await signer.getAddress();
     const iface = new ethers.utils.Interface(ABI);
 
     const encodedData = iface.encodeFunctionData("isValidSignature", [
