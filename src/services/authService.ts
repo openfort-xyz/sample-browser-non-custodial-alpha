@@ -16,10 +16,8 @@ import {
   const onIdTokenChange = (callback: (user: User| null) => void) => {
     return onIdTokenChanged(auth, async(user) => {
       if (user) {
-        // User is signed in.
         callback(user);
       } else {
-        // User is signed out.
         callback(null);
       }
     });

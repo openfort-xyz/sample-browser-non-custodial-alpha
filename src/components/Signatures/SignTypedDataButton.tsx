@@ -90,15 +90,21 @@ const SignTypedDataButton: React.FC<{
         {loading ? <Spinner /> : "Sign Typed Message"}
       </button>
       {signature && (
-        <button
-          onClick={async () => {
-            await handleVerifySignature();
-          }}
-          disabled={loadingVerify}
-          className={`mt-2 w-52 px-4 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50`}
-        >
-          {loadingVerify ? <Spinner /> : "Verify Sign Message"}
-        </button>
+        <div>
+          <p className="text-red-400 text-xs mt-2">
+            Signature verification will only be valid once the smart account has
+            been deployed (after using it or manually deploying it)
+          </p>
+          <button
+            onClick={async () => {
+              await handleVerifySignature();
+            }}
+            disabled={loadingVerify}
+            className={`mt-2 w-52 px-4 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50`}
+          >
+            {loadingVerify ? <Spinner /> : "Verify Sign Message"}
+          </button>
+        </div>
       )}
 
       {error && (

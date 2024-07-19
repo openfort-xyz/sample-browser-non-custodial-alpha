@@ -16,12 +16,12 @@ const Provider1193ActionButton: React.FC<{
     const web3Provider = new ethers.providers.Web3Provider(provider);
     const signer = web3Provider.getSigner();
 
-    const erc721Address = "0x2522f4fc9af2e1954a3d13f7a5b2683a00a4543a";
+    const erc721Address = "0x6b4582165Ef6e79489769ea62f8287C515e44FB6";
 
     // The Application Binary Interface (ABI) of a contract provides instructions for
     // encoding and decoding typed transaction data.
     // Read more about [ABI Formats](https://docs.ethers.org/v5/api/utils/abi/formats/).
-    const abi = ["function mint(address _to)"];
+    const abi = ["function mint(address _to, uint256 _tokenId)"];
 
     // Ethers provides an helper class called `Contract` that allows us to interact with smart contracts
     // by abstracting away data-encoding using the contract ABI (definition of the contract's interface).
@@ -29,7 +29,11 @@ const Provider1193ActionButton: React.FC<{
 
     let tx;
     try {
-      tx = await contract.mint("0x64452Dff1180b21dc50033e1680bB64CDd492582");
+      const randomTokenId = Date.now();
+      tx = await contract.mint(
+        "0x64452Dff1180b21dc50033e1680bB64CDd492582",
+        randomTokenId.toString()
+      );
       console.log("Transaction hash:", tx);
       handleSetMessage(`https://www.oklink.com/amoy/tx/${tx.hash}`);
       const receipt = await tx.wait();

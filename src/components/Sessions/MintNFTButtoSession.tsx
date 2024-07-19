@@ -54,7 +54,9 @@ const MintNFTSessionButton: React.FC<{
     const transactionHash = await mintNFT();
     setLoading(false);
     if (transactionHash) {
-      handleSetMessage(`https://www.oklink.com/amoy/tx/${transactionHash}`);
+      handleSetMessage(
+        `https://subnets-test.avax.network/beam/tx/${transactionHash}`
+      );
     }
   };
 

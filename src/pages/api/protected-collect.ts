@@ -29,12 +29,12 @@ export default async function handler(
       });
     }
 
-    const currentTime = Date.now()
+    const randomTokenId = Date.now()
     const playerId = response.id;
     const interaction_mint = {
       contract: contract_id,
       functionName: 'mint',
-      functionArgs: [playerId, currentTime.toString()],
+      functionArgs: [playerId, randomTokenId.toString()],
     };
 
     const transactionIntent = await openfort.transactionIntents.create({

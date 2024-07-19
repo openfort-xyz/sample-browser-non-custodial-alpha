@@ -6,8 +6,7 @@ const baseConfiguration: OpenfortConfiguration = {
 }
 const shieldConfiguration: ShieldConfiguration = {
   shieldPublishableKey: process.env.NEXT_PUBLIC_SHIELD_API_KEY!,
-  shieldEncryptionKey: process.env.NEXT_PUBLIC_SHIELD_ENCRYPTION_SHARE!,
-  debug: true,
+  debug: false,
 }
 
 // Initialize the Openfort SDK
