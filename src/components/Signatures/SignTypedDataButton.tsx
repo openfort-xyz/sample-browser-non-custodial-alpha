@@ -55,17 +55,6 @@ const SignTypedDataButton: React.FC<{
       signature,
     ]);
 
-    // Owner of the smart account
-    const verifySigner = ethers.utils.verifyTypedData(
-      domain,
-      types,
-      data,
-      signature!
-    );
-
-    handleSetMessage(
-      `Recovered signer address (owner of smart account): ${verifySigner}`
-    );
     const tx = {
       to: address,
       data: encodedData,
