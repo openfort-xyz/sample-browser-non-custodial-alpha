@@ -55,6 +55,32 @@ const SignTypedDataButton: React.FC<{
       signature,
     ]);
 
+    const updatedDomain = {
+      name: "Openfort",
+      version: "0.5",
+      chainId: Number(domain.chainId),
+      verifyingContract: address,
+    };
+
+    const updatedTypes = {
+      OpenfortMessage: [{ name: "hashedMessage", type: "bytes32" }],
+    };
+
+    const originalHash = _TypedDataEncoder.hash(domain, types, data);
+    const updatedMessage = {
+      hashedMessage: originalHash,
+    };
+
+    const recoveredAddress = ethers.utils.verifyTypedData(
+      updatedDomain,
+      updatedTypes,
+      updatedMessage,
+      signature!
+    );
+
+    handleSetMessage(
+      `Recovered signer address (owner of smart account): ${recoveredAddress}`
+    );
     const tx = {
       to: address,
       data: encodedData,
