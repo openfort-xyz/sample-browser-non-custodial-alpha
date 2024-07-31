@@ -1,7 +1,6 @@
 import { AuthPlayerResponse, Provider, ShieldAuthentication, ShieldAuthType, ThirdPartyOAuthProvider, TokenType, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
 import openfort from '../utils/openfortConfig';
 
-const chainId = 13337;
 
 class OpenfortService {
     async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
@@ -109,6 +108,7 @@ class OpenfortService {
           tokenType: "idToken",
           encryptionSession: await this.getEncryptionSession(),
         };
+        const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID);
         await openfort.configureEmbeddedSigner(chainId, shieldAuth);
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);
@@ -125,6 +125,7 @@ class OpenfortService {
           tokenType: "idToken",
           encryptionSession: await this.getEncryptionSession(),
         };
+        const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID);
         await openfort.configureEmbeddedSigner(chainId, shieldAuth, pin);
       } catch (error) {
         console.error('Error authenticating with Openfort:', error);

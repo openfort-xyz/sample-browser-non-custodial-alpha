@@ -10,7 +10,7 @@
     "prettier": "prettier -w \"**/*.ts\" \"**/*.tsx\""
   },
   "dependencies": {
-    "@openfort/openfort-js": "^0.7.26",
+    "@openfort/openfort-js": "^0.8.6",
     "@openfort/openfort-node": "^0.6.57",
     "ethers": "5.7.2",
     "axios": "^1.6.8",

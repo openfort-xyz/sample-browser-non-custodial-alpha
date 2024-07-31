@@ -131,8 +131,9 @@ const SignTypedDataButton: React.FC<{
 
 export default SignTypedDataButton;
 
+const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID);
 const domain = {
-  chainId: 13337,
+  chainId: chainId,
   version: "1.5",
   name: "Seaport",
   verifyingContract: "0x00000000000000adc04c56bf30ac9d3c0aaf14dc",
