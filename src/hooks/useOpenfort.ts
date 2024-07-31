@@ -37,17 +37,12 @@ export const useOpenfort = () => {
     }
   }, []);
 
-  const getEvmProvider = useCallback((): Provider | null => {
-    try {
-      const externalProvider = openfortService.getEvmProvider();
-      if (!externalProvider) {
-        throw new Error('EVM provider is undefined');
-      }
-      return externalProvider
-    } catch (error) {
-      setError(error instanceof Error ? error : new Error('An error occurred getting EVM provider'));
-      return null
+  const getEvmProvider = useCallback((): Provider => {
+    const externalProvider = openfortService.getEvmProvider();
+    if (!externalProvider) {
+      throw new Error('EVM provider is undefined');
     }
+    return externalProvider
   }, []);
 
   const mintNFT = useCallback(async (identityToken: string): Promise<string | null> => {

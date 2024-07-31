@@ -2,7 +2,7 @@ import { AuthPlayerResponse, Provider, ShieldAuthentication, TokenType, TypedDat
 import openfort from '../utils/openfortConfig';
 import { ThirdPartyOAuthProvider } from '@openfort/openfort-js';
 
-const chainId = 80002;
+const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID);
 
 class OpenfortService {
     async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
@@ -15,7 +15,7 @@ class OpenfortService {
     }
     getEvmProvider(): Provider {
       try {
-        return openfort.getEthereumProvider({policy:"pol_e7491b89-528e-40bb-b3c2-9d40afa4fefc", announceProvider:true});
+        return openfort.getEthereumProvider({policy:process.env.NEXT_PUBLIC_POLICY_ID, announceProvider:true});
 
       } catch (error) {
         console.error('Error on getEthereumProvider:', error);

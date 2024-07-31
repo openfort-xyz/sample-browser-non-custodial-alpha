@@ -3,14 +3,20 @@ import { useOpenfort } from "../../hooks/useOpenfort";
 import { EmbeddedState } from "@openfort/openfort-js";
 import Spinner from "../Shared/Spinner";
 import { useAuth } from "../../contexts/AuthContext";
+import { ethers } from "ethers";
 
 const SignTypedDataButton: React.FC<{
   handleSetMessage: (message: string) => void;
 }> = ({ handleSetMessage }) => {
-  const { signTypedData, embeddedState, error } = useOpenfort();
+  const { signTypedData, embeddedState, error, getEvmProvider } = useOpenfort();
   const { idToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const handleSignTypedData = async () => {
+    const provider = getEvmProvider();
+    const web3Provider = new ethers.providers.Web3Provider(provider);
+    const signer = await web3Provider.getSigner();
+    const address = await signer.getAddress();
+
     if (!idToken) {
       console.error("The Openfort integration isn't ready.");
       return;
@@ -20,8 +26,8 @@ const SignTypedDataButton: React.FC<{
       const domain = {
         name: "Openfort",
         version: "0.5",
-        chainId: 80002,
-        verifyingContract: "0x9b5AB198e042fCF795E4a0Fa4269764A4E8037D2",
+        chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
+        verifyingContract: address,
       };
       const types = {
         Mail: [
