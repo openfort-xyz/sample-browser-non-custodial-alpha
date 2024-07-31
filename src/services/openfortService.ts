@@ -13,7 +13,7 @@ class OpenfortService {
     }
     getEvmProvider(): Provider {
       try {
-        return openfort.getEthereumProvider({policy:"pol_be4f381c-90ac-479d-862a-36fc724c3164", announceProvider:true});
+        return openfort.getEthereumProvider({policy:process.env.NEXT_PUBLIC_POLICY_ID, announceProvider:true});
 
       } catch (error) {
         console.error('Error on getEthereumProvider:', error);
