@@ -2,18 +2,7 @@
 
 This is a template for integrating [**Openfort**](https://www.openfort.xyz/) into a [NextJS](https://nextjs.org/) project using [Firebase](https://firebase.google.com/) as for authentication. Check out the deployed app [here](https://create-next-app.openfort.xyz/)!
 
-
-It supports login with all regular auth providers and uses Firebase as external authentication platform.
-
-Documentation for [embedded signer](https://www.openfort.xyz/docs/guides/auth/embedded-signer).
-
-## Features
-
-- 🚀 NextJS, FirebaseAuth & Tailwindcss with Typescript
-- 📝 Written with TypeScript
-- 🔒 Client-side authentication sample with Credentials/Google Signin
-- 🔒 Server-side authentication with cookies sample
-- 🦚 with Tailwindcss layout
+This demo uses NextJS's [Pages Router](https://nextjs.org/docs/pages/building-your-application/routing).
 
 ## How to run locally
 
