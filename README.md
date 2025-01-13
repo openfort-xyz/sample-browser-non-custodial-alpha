@@ -1,6 +1,7 @@
-# Openfort Embedded Signer - Browser
+# Openfort Embedded Signer with Third-party Auth 
 
-This sample shows you how to use Openfort's Embedded Signer.
+This is a template for integrating [**Openfort**](https://www.openfort.xyz/) into a [NextJS](https://nextjs.org/) project using [Firebase](https://firebase.google.com/) as for authentication. Check out the deployed app [here](https://create-next-app.openfort.xyz/)!
+
 
 It supports login with all regular auth providers and uses Firebase as external authentication platform.
 
