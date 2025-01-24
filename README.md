@@ -33,8 +33,7 @@ If you want to sponsor transactions, you can add policies to your `.env.local` f
 
 
 ```sh
-NEXT_PUBLIC_POLICY_SEPOLIA=
-NEXT_PUBLIC_POLICY_BASE_SEPOLIA=
+NEXT_PUBLIC_POLICY_ID=
 ```
 
 **3. Get your Firebase Config**
