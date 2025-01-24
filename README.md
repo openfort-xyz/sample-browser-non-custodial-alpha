@@ -10,37 +10,31 @@ This demo uses NextJS's [Pages Router](https://nextjs.org/docs/pages/building-yo
 
 Copy the .env.local.example file into a file named .env.local in the folder of the server you want to use. For example:
 
-```
-cp .env.local.example .env.local
-```
-
 You will need an Openfort account in order to run the demo. Once you set up your account, go to the Openfort [developer dashboard](https://dashboard.openfort.xyz/apikeys) to find your API keys.
 
 To enable your embedded signer, you can follow the instructions [here](https://www.openfort.xyz/docs/guides/auth/embedded-signer).
 
-```
+```sh
+# In your terminal, create .env.local from .env.example
+cp .env.example .env.local
+
 NEXTAUTH_SHIELD_ENCRYPTION_SHARE=
 NEXTAUTH_SHIELD_SECRET_KEY=
+
 NEXT_PUBLIC_SHIELD_API_KEY=
-NEXT_PUBLIC_OPENFORT_PUBLIC_KEY=<replace-with-your-publishable-key>
-NEXTAUTH_OPENFORT_SECRET_KEY=<replace-with-your-secret-key>
+NEXT_PUBLIC_OPENFORT_PUBLIC_KEY=
 ```
 
-**2. Create a Policy and add a Contract**
+**2. Create a Policy**
 
 [![Required](https://img.shields.io/badge/REQUIRED-TRUE-ORANGE.svg)](https://shields.io/)
 
-You can create Policies and add Contracts in the Dashboard or with the API. This sample requires a Policy and a Contract to run. Once you've created them, and add its ID to `CollectButton`.
+If you want to sponsor transactions, you can add policies to your `.env.local` file. You can create gas sponsorship policies [from your Openfort dashboard](https://www.openfort.xyz/docs/guides/dashboard/gas-sponsorship).
 
-`contract_id` is the ID of a [Contract](https://www.openfort.xyz/docs/reference/api/create-contract-object) for your contract. A contract has a chainId. 
-If you need a test contract address, use 0x2522F4Fc9aF2E1954a3D13f7a5B2683A00a4543A (NFT contract deployed in 80002 Amoy).
 
-`policy_id` is the ID of a [Policy](https://www.openfort.xyz/docs/reference/api/create-a-policy-object) for your contract. A policy has a contract and chainId. For this demo to work, the policy must have both the contract and the register sessions as rules.
-
-```
-NEXT_PUBLIC_CHAIN_ID=
-NEXT_PUBLIC_CONTRACT_ID=
-NEXT_PUBLIC_POLICY_ID=
+```sh
+NEXT_PUBLIC_POLICY_SEPOLIA=
+NEXT_PUBLIC_POLICY_BASE_SEPOLIA=
 ```
 
 **3. Get your Firebase Config**
@@ -76,13 +70,12 @@ To set up Firebase to authenticate players with Openfort, visit your [dashboard 
 
 Install & Run:
 
-```bash
+```sh
 npm install
 npm run dev
-# or
-yarn
-yarn dev
 ```
+
+In your project directory, run `npm run dev`. You can now visit http://localhost:3000 to see your app and login with Openfort!
 
 
 ## Get support

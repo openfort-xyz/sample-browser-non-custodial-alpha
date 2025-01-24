@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NextPage } from "next";
 import LoginSignupForm from "../components/Authentication/LoginSignupForm";
-import MintNFTButton from "../components/NFT/MintNFTButton";
 import { useOpenfort } from "../hooks/useOpenfort";
 import { EmbeddedState } from "@openfort/openfort-js";
 import AccountRecovery from "../components/Authentication/AccountRecovery";
@@ -12,19 +11,39 @@ import SignTypedDataButton from "../components/Signatures/SignTypedDataButton";
 import EvmProviderButton from "../components/EvmProvider/EvmProviderButton";
 
 import { useAuth } from "../contexts/AuthContext";
-import CreateSessionButton from "../components/Sessions/CreateSessionButton";
-import ExportPrivateKeyButton from "../components/Export/ExportPrivateKeyButton";
+import { useAccount, useChainId, useConnect, useDisconnect, useEnsName } from "wagmi";
 
 const HomePage: NextPage = () => {
   const { user } = useAuth();
-  const { embeddedState } = useOpenfort();
+  const { embeddedState, getEvmProvider } = useOpenfort();
   const [message, setMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const {connectors, connect } = useConnect();
+  const chainId = useChainId();
 
   const handleSetMessage = (message: string) => {
-    const newMessage = `> ${message} \n\n`;
-    setMessage((prev) => prev + newMessage);
+    const newMessage = `${message} \n\n`;
+    setMessage((prev) =>  prev + newMessage);
   };
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.scrollTop = 0;
+      textareaRef.current.focus();
+    }
+  }, [message]);
+
+  useEffect(() => {
+    getEvmProvider()
+  }, []);
+
+  useEffect(() => {
+    if(embeddedState === EmbeddedState.READY) {
+      const connector = connectors.find((connector) => connector.name === "Openfort")
+      if(!connector) return
+      connect({connector: connector!, chainId});
+    }
+  }, [embeddedState]);
 
   if (!user) return <LoginSignupForm />;
 
@@ -51,17 +70,15 @@ const HomePage: NextPage = () => {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col px-4 sm:px-6">
+    <div className="mx-auto flex w-full max-w-2xl flex-col px-4 sm:px-6 space-y-8">
       <p className="text-gray-400 mb-2">Welcome, {user.email}!</p>
-      <div className="absolute top-2 right-2">
-        <LogoutButton />
-      </div>
-      <div className="mb-8">
+      <Account />
+      <div>
         <span className="font-medium text-black">Console: </span>
         <div className="py-4 block h-full">
           <textarea
             ref={textareaRef}
-            className="no-scrollbar h-full w-full rounded-lg border-0 bg-gray-100 p-4 font-mono text-xs text-black"
+            className="no-scrollbar h-36 w-full rounded-lg border-0 bg-gray-100 p-4 font-mono text-xs text-black"
             value={message}
             readOnly
           />
@@ -70,14 +87,9 @@ const HomePage: NextPage = () => {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="bg-white p-4 rounded-md shadow-2xl space-y-4">
           <h2 className="flex justify-left font-medium text-xl pb-4">
-            Account actions
+           Write Contract
           </h2>
           <div>
-            <span className="font-medium text-black">Backend action: </span>
-            <MintNFTButton handleSetMessage={handleSetMessage}/>
-          </div>
-          <div>
-            <span className="font-medium text-black">Ethers provider: </span>
             <EvmProviderButton handleSetMessage={handleSetMessage}/>
           </div>
         </div>
@@ -86,13 +98,12 @@ const HomePage: NextPage = () => {
             Signatures
           </h2>
           <div>
-            <span className="font-medium text-black">Message: </span>Hello
-            World!
             <SignMessageButton handleSetMessage={handleSetMessage}/>
           </div>
 
           <div>
             <span className="font-medium text-black">Typed message: </span>
+            <br/>
             <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -104,25 +115,32 @@ const HomePage: NextPage = () => {
             <SignTypedDataButton handleSetMessage={handleSetMessage}/>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-md shadow-2xl space-y-4">
-          <h2 className="flex justify-left font-medium text-xl pb-4">
-            Session keys
-          </h2>
-          <div>
-            <CreateSessionButton handleSetMessage={handleSetMessage}/>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-md shadow-2xl space-y-4">
-          <h2 className="flex justify-left font-medium text-xl pb-4">
-            Export Private Key
-          </h2>
-          <div>
-            <ExportPrivateKeyButton handleSetMessage={handleSetMessage}/>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
+
+function Account() {
+  const account = useAccount()
+  const { data: ensName } = useEnsName({
+    address: account.address,
+  })
+  const {disconnect,data} = useDisconnect()
+
+  return (
+    <div>
+      <div>
+        account: {account.address} {ensName}
+        <br />
+        chainId: {account.chainId}
+        <br />
+        status: {account.status}
+      </div>
+      {account.connector?.name && account.connector?.name !== "Openfort" && (
+      <button type='button' onClick={() => disconnect()}>Disconnect</button>
+      )}
+    </div>
+  )
+}
 
 export default HomePage;

@@ -2,7 +2,7 @@ import { authService } from '../services/authService';
 import { useOpenfort } from './useOpenfort';
 
 export const useAuthentication = () => {
-  const { logout:signOut } = useOpenfort();
+  const { logout: signOut } = useOpenfort();
 
   const signIn = async (email: string, password: string) => {
     try {

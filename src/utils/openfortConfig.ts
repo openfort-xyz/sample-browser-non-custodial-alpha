@@ -6,10 +6,9 @@ const baseConfiguration: OpenfortConfiguration = {
 }
 const shieldConfiguration: ShieldConfiguration = {
   shieldPublishableKey: process.env.NEXT_PUBLIC_SHIELD_API_KEY!,
-  debug: false,
 }
 
-if(!process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY || !process.env.NEXT_PUBLIC_SHIELD_API_KEY || !process.env.NEXT_PUBLIC_CHAIN_ID || !process.env.NEXT_PUBLIC_POLICY_ID || !process.env.NEXT_PUBLIC_CONTRACT_ID) {
+if (!process.env.NEXT_PUBLIC_OPENFORT_PUBLIC_KEY || !process.env.NEXT_PUBLIC_SHIELD_API_KEY) {
   throw new Error('Missing Openfort environment variables');
 }
 

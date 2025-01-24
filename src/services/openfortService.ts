@@ -1,87 +1,29 @@
-import { AuthPlayerResponse, Provider, ShieldAuthentication, TokenType, TypedDataDomain, TypedDataField, ShieldAuthType } from '@openfort/openfort-js';
+import { AuthPlayerResponse, Provider, ShieldAuthentication, TokenType, ShieldAuthType } from '@openfort/openfort-js';
 import openfort from '../utils/openfortConfig';
 import { ThirdPartyOAuthProvider } from '@openfort/openfort-js';
+import { polygonAmoy } from 'viem/chains';
 
-const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID);
+const chainId = polygonAmoy.id
 
 class OpenfortService {
   async authenticateWithThirdPartyProvider(identityToken: string): Promise<AuthPlayerResponse> {
     try {
-      return await openfort.authenticateWithThirdPartyProvider({ provider: ThirdPartyOAuthProvider.FIREBASE, token: identityToken, tokenType: TokenType.ID_TOKEN });
+      return await openfort.authenticateWithThirdPartyProvider({
+        provider: ThirdPartyOAuthProvider.FIREBASE,
+        token: identityToken,
+        tokenType: TokenType.ID_TOKEN
+      });
     } catch (error) {
       console.error('Error authenticating with Openfort:', error);
       throw error;
     }
   }
   getEvmProvider(): Provider {
-    try {
-      return openfort.getEthereumProvider({ policy: process.env.NEXT_PUBLIC_POLICY_ID });
-
-    } catch (error) {
-      console.error('Error on getEthereumProvider:', error);
-      throw error;
-    }
-  }
-  async mintNFT(identityToken: string): Promise<string | null> {
-    try {
-      const collectResponse = await fetch(`/api/protected-collect`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${identityToken}`,
-        },
-      });
-
-      if (!collectResponse.ok) {
-        alert("Failed to mint NFT status: " + collectResponse.status);
-        return null
-      }
-      const collectResponseJSON = await collectResponse.json();
-
-      if (collectResponseJSON.data?.nextAction) {
-        const response = await openfort.sendSignatureTransactionIntentRequest(
-          collectResponseJSON.data.id,
-          collectResponseJSON.data.nextAction.payload.userOperationHash
-        );
-        return response.response?.transactionHash ?? null
-      } else return null
-    } catch (error) {
-      console.error("Error:", error);
-      return null
-    }
-  }
-  async signMessage(message: string, options?: { hashMessage: boolean; arrayifyMessage: boolean }): Promise<string | null> {
-    try {
-      return await openfort.signMessage(message, options);
-    } catch (error) {
-      console.error("Error:", error);
-      return null
-    }
-  }
-  async exportPrivateKey(): Promise<string | null> {
-    try {
-      return await openfort.exportPrivateKey();
-    } catch (error) {
-      console.error("Error:", error);
-      return null
-    }
-  }
-  async signTypedData(domain: TypedDataDomain, types: Record<string, Array<TypedDataField>>, value: Record<string, any>): Promise<string | null> {
-    try {
-      return await openfort.signTypedData(domain, types, value);
-    } catch (error) {
-      console.error("Error:", error);
-      return null
-    }
+    return openfort.getEthereumProvider({ policy: process.env.NEXT_PUBLIC_POLICY_ID });
   }
   async getEmbeddedState() {
-    try {
-      const state = await openfort.getEmbeddedState();
-      return state;
-    } catch (error) {
-      console.error('Error retrieving embedded state from Openfort:', error);
-      throw error;
-    }
+    const state = await openfort.getEmbeddedState();
+    return state;
   }
 
   async getEncryptionSession(): Promise<string> {
@@ -105,8 +47,8 @@ class OpenfortService {
       const shieldAuth: ShieldAuthentication = {
         auth: ShieldAuthType.OPENFORT,
         token: identityToken,
-        authProvider: "firebase",
-        tokenType: "idToken",
+        authProvider: ThirdPartyOAuthProvider.FIREBASE,
+        tokenType: TokenType.ID_TOKEN,
         encryptionSession: await this.getEncryptionSession(),
       };
       await openfort.configureEmbeddedSigner(chainId, shieldAuth);
@@ -121,8 +63,8 @@ class OpenfortService {
       const shieldAuth: ShieldAuthentication = {
         auth: ShieldAuthType.OPENFORT,
         token: identityToken,
-        authProvider: "firebase",
-        tokenType: "idToken",
+        authProvider: ThirdPartyOAuthProvider.FIREBASE,
+        tokenType: TokenType.ID_TOKEN,
         encryptionSession: await this.getEncryptionSession(),
       };
       await openfort.configureEmbeddedSigner(chainId, shieldAuth, pin);

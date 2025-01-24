@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import openfortService from '../services/openfortService'; // Adjust the import path as needed
-import { EmbeddedState, Provider, TypedDataDomain, TypedDataField } from '@openfort/openfort-js';
+import openfortService from '../services/openfortService';
+import { EmbeddedState, Provider } from '@openfort/openfort-js';
 
 export const useOpenfort = () => {
   const [error, setError] = useState<Error | null>(null);
@@ -28,7 +28,7 @@ export const useOpenfort = () => {
     };
   }, []);
 
-  const authenticateWithOpenfort = useCallback(async(identityToken: string) => {
+  const authenticateWithOpenfort = useCallback(async (identityToken: string) => {
     try {
       await openfortService.authenticateWithThirdPartyProvider(identityToken);
     } catch (error) {
@@ -45,52 +45,12 @@ export const useOpenfort = () => {
     return externalProvider
   }, []);
 
-  const mintNFT = useCallback(async (identityToken: string): Promise<string | null> => {
-    try {
-      return await openfortService.mintNFT(identityToken);
-    } catch (error) {
-      console.error('Error minting NFT with Openfort:', error);
-      setError(error instanceof Error ? error : new Error('An error occurred minting the NFT'));
-      return null;
-    }
-  }, []);
 
-  const signMessage = useCallback(async (message: string, options?: {hashMessage: boolean; arrayifyMessage: boolean}): Promise<string | null> => {
+  const handleRecovery = useCallback(async (method: "password" | "automatic", identityToken: string, pin?: string) => {
     try {
-      return await openfortService.signMessage(message, options);
-    } catch (error) {
-      console.error('Error signing message:', error);
-      setError(error instanceof Error ? error : new Error('An error occurred signing the message'));
-      return null;
-    }
-  }, []);
-
-  const exportPrivateKey = useCallback(async (): Promise<string | null> => {
-    try {
-      return await openfortService.exportPrivateKey();
-    } catch (error) {
-      console.error('Error exporting private key:', error);
-      setError(error instanceof Error ? error : new Error('An error occurred exporting the private key'));
-      return null;
-    }
-  }, []);
-
-  const signTypedData = useCallback(async (domain: TypedDataDomain, types: Record<string, Array<TypedDataField>>, value: Record<string, any>): Promise<string | null> => {
-    try {
-      return await openfortService.signTypedData(domain, types, value);
-    } catch (error) {
-      console.error('Error signing message:', error);
-      setError(error instanceof Error ? error : new Error('An error occurred signing the message'));
-      return null;
-    }
-  }, []);
-
-
-  const handleRecovery = useCallback(async (method: "password"|"automatic", identityToken: string, pin?: string) => {
-    try {
-      if(method==="automatic"){
+      if (method === "automatic") {
         await openfortService.setAutomaticRecoveryMethod(identityToken)
-      } else if(method==="password"){
+      } else if (method === "password") {
         if (!pin || pin.length < 4) {
           alert("Password recovery must be at least 4 characters");
           return;
@@ -116,11 +76,7 @@ export const useOpenfort = () => {
   return {
     authenticateWithOpenfort,
     embeddedState,
-    mintNFT,
-    signMessage,
-    exportPrivateKey,
     getEvmProvider,
-    signTypedData,
     handleRecovery,
     error,
     logout

@@ -1,49 +1,35 @@
-import React, { useState } from "react";
-import { useOpenfort } from "../../hooks/useOpenfort";
-import { EmbeddedState } from "@openfort/openfort-js";
+import React, { useEffect } from "react";
+import { useSignMessage } from "wagmi";
 import Spinner from "../Shared/Spinner";
-import { useAuth } from "../../contexts/AuthContext";
 
 const SignMessageButton: React.FC<{
   handleSetMessage: (message: string) => void;
 }> = ({ handleSetMessage }) => {
-  const { signMessage, embeddedState, error } = useOpenfort();
-  const { idToken } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { data, signMessage, error, isPending } = useSignMessage()
 
-  const handleSignMessage = async () => {
-    if (!idToken) {
-      console.error("The Openfort integration isn't ready.");
-      return;
+  useEffect(() => {
+    if(data) {
+      handleSetMessage(data)
     }
-    try {
-      setLoading(true);
-      const signature = await signMessage("Hello World!");
-      setLoading(false);
-      if (!signature) {
-        throw new Error("Failed to sign message");
-      }
-      handleSetMessage(signature);
-    } catch (err) {
-      // Handle errors from minting process
-      console.error("Failed to sign message:", err);
-      alert("Failed to sign message. Please try again.");
-    }
-  };
-
+  }, [data])
   return (
-    <div className="flex flex-col items-center justify-center">
-      <button
-        onClick={handleSignMessage}
-        disabled={embeddedState !== EmbeddedState.READY}
-        className={`mt-2 w-44 px-4 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50`}
+    <div>
+      <form
+        className='flex-col flex space-y-2'
+        onSubmit={(event) => {
+          event.preventDefault()
+          const formData = new FormData(event.target as HTMLFormElement)
+          signMessage({ message: formData.get('message') as string })
+        }}
       >
-        {loading ? <Spinner /> : "Sign Message"}
-      </button>
-
-      {error && (
-        <p className="mt-2 text-red-500">{`Error: ${error.message}`}</p>
-      )}
+        <input  name="message" className="p-2 border border-gray-200"/>
+        <button 
+        type="submit"
+        className={`w-full px-4 py-1 bg-white text-black font-medium border border-gray-200 rounded-lg hover:bg-gray-50 disabled:bg-gray-400 disabled:cursor-not-allowed`}>
+          {isPending ? <Spinner />: "Sign Message"}
+          </button>
+        <p className="mt-2 text-red-500">{error?.message}</p>
+      </form>
     </div>
   );
 };

@@ -1,32 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useOpenfort } from "../../hooks/useOpenfort";
 import { EmbeddedState } from "@openfort/openfort-js";
 import Spinner from "../Shared/Spinner";
 import { useAuth } from "../../contexts/AuthContext";
-import { ethers } from "ethers";
+import { useAccount, useSignTypedData } from "wagmi";
+import { polygonAmoy } from "viem/chains";
 
 const SignTypedDataButton: React.FC<{
   handleSetMessage: (message: string) => void;
 }> = ({ handleSetMessage }) => {
-  const { signTypedData, embeddedState, error, getEvmProvider } = useOpenfort();
+  const { embeddedState } = useOpenfort();
+  const { address } = useAccount();
+  const { signTypedData, data, isPending, error  } = useSignTypedData();
   const { idToken } = useAuth();
-  const [loading, setLoading] = useState(false);
   const handleSignTypedData = async () => {
-    const provider = getEvmProvider();
-    const web3Provider = new ethers.providers.Web3Provider(provider);
-    const signer = await web3Provider.getSigner();
-    const address = await signer.getAddress();
-
     if (!idToken) {
       console.error("The Openfort integration isn't ready.");
       return;
     }
     try {
-      setLoading(true);
       const domain = {
         name: "Openfort",
         version: "0.5",
-        chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
+        chainId: polygonAmoy.id,
         verifyingContract: address,
       };
       const types = {
@@ -40,7 +36,7 @@ const SignTypedDataButton: React.FC<{
           { name: "wallet", type: "address" },
         ],
       };
-      const data = {
+      const message = {
         from: {
           name: "Alice",
           wallet: "0x2111111111111111111111111111111111111111",
@@ -51,12 +47,10 @@ const SignTypedDataButton: React.FC<{
         },
         content: "Hello!",
       };
-      const signature = await signTypedData(domain, types, data);
-      setLoading(false);
-      if (!signature) {
-        throw new Error("Failed to sign message");
-      }
-      handleSetMessage(signature);
+      signTypedData({
+        domain, types, message,
+        primaryType: "Mail"
+      });
     } catch (err) {
       // Handle errors from minting process
       console.error("Failed to sign message:", err);
@@ -64,18 +58,22 @@ const SignTypedDataButton: React.FC<{
     }
   };
 
+  useEffect(() => {
+    if (data) {
+      handleSetMessage(data);
+    }
+  }, [data]);
+
   return (
     <div className="flex flex-col items-center justify-center">
       <button
         onClick={handleSignTypedData}
         disabled={embeddedState !== EmbeddedState.READY}
-        className={`mt-2 w-52 px-4 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50`}
+        className={`w-full px-4 py-1 bg-white text-black font-medium border border-gray-200 rounded-lg hover:bg-gray-50 disabled:bg-gray-400 disabled:cursor-not-allowed`}
       >
-        {loading ? <Spinner /> : "Sign Typed Message"}
+        {isPending ? <Spinner /> : "Sign Typed Message"}
       </button>
-      {error && (
-        <p className="mt-2 text-red-500">{`Error: ${error.message}`}</p>
-      )}
+      <p className="mt-2 text-red-500">{error?.message}</p>
     </div>
   );
 };

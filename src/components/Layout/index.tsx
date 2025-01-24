@@ -1,19 +1,20 @@
 import Header from "./Header";
-import Footer from "./Footer";
 
 type Props = {
+  sidebar: React.ReactNode;
   children: React.ReactNode;
 };
 
-export default function Layout({ children }: Props) {
+export default function Layout({ children, sidebar }: Props) {
   return (
     <div>
       <Header />
-
-      <main className="flex min-h-full overflow-hidden pt-8 sm:py-14">
-        {children}
+      <main className="h-screen flex">
+        <div className="w-full md:w-1/4 hidden md:flex max-w-sm bg-white border-r flex-col h-screen fixed">
+          {sidebar}
+        </div>
+        <div className="w-full my-4">{children}</div>
       </main>
-      <Footer />
     </div>
   );
 }
