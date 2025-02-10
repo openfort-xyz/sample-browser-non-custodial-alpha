@@ -12,7 +12,7 @@ Copy the .env.local.example file into a file named .env.local in the folder of t
 
 You will need an Openfort account in order to run the demo. Once you set up your account, go to the Openfort [developer dashboard](https://dashboard.openfort.xyz/apikeys) to find your API keys.
 
-To enable your embedded signer, you can follow the instructions [here](https://www.openfort.xyz/docs/guides/auth/embedded-signer).
+To enable your embedded signer, you can follow the instructions [here](https://www.openfort.xyz/docs/guides/javascript/embedded-signer/recovery).
 
 ```sh
 # In your terminal, create .env.local from .env.example
@@ -54,7 +54,7 @@ Update `.env`
 
 **4. Set up Firebase Auth in Openfort**
 
-To set up Firebase to authenticate players with Openfort, visit your [dashboard provider settings](https://dashboard.openfort.xyz/players/auth/providers). You can follow a guide on how to set up Firebase Auth in Openfort [here](https://www.openfort.xyz/docs/guides/auth/external-auth/firebase).
+To set up Firebase to authenticate players with Openfort, visit your [dashboard provider settings](https://dashboard.openfort.xyz/players/auth/providers). You can follow a guide on how to set up Firebase Auth in Openfort [here](https://www.openfort.xyz/docs/guides/javascript/auth/external-auth).
 
 <div align="center">
   <img
@@ -78,8 +78,6 @@ In your project directory, run `npm run dev`. You can now visit http://localhost
 
 
 ## Get support
-If you found a bug or want to suggest a new [feature/use case/sample], please [file an issue](../../issues).
-
 If you have questions, comments, or need help with code, we're here to help:
 - on [Discord](https://discord.com/invite/t7x7hwkJF4)
 - on Twitter at [@openfortxyz](https://twitter.com/openfortxyz)
